@@ -103,6 +103,8 @@ void UCustomCharacterMovement::OnMoveInputReceived(const FInputActionValue& Inpu
 	{
 		bIsMovingForward = !bIsMovingForward;
 	}
+
+	bIsMovingForward = MoveInput.Y > 0;
 }
 
 void UCustomCharacterMovement::OnLookInputReceived(const FInputActionValue& InputActionValue)
@@ -133,28 +135,40 @@ void UCustomCharacterMovement::OnCrouchInputReceived(const FInputActionValue& In
 {
 	const bool CrouchInput = InputActionValue.Get<bool>();
 	
-	// Hold/toggle crouch logic
+	// Hold/toggle crouch logic (THIS NEEDS TO BE REMADE)
 	if(!bToggleCrouch)
 	{
-		if(CrouchInput) {OwningPlayerCharacter->Crouch();}
+		if(CrouchInput)
+		{
+			OwningPlayerCharacter->Crouch();
+			bJumpQueued = false;
+		}
 		else {OwningPlayerCharacter->UnCrouch();}
 	}
 	else if (CrouchInput)
 	{
 		if(IsCrouching()) {OwningPlayerCharacter->UnCrouch();}
-		else {OwningPlayerCharacter->UnCrouch();}
+		else
+		{
+			OwningPlayerCharacter->Crouch();
+			bJumpQueued = false;
+		}
 	}
 	//  Dash logic
 	if(bCanDashOnCrouch && CrouchInput && !IsMovingOnGround())
 	{
 		OwningPlayerCharacter->LaunchCharacter(DashVelocity, false, true);
 	}
+
+	UE_LOG(LogTemp, Display, TEXT("eeee"));
 }
 
 void UCustomCharacterMovement::OnSprintInputReceived(const FInputActionValue& InputActionValue)
 {
 	const bool SprintInput = InputActionValue.Get<bool>();
 	bWantsToSprint = bIsMovingForward && SprintInput;
+	bWantsToCrouch = false;
+	UE_LOG(LogTemp, Display, TEXT("aaaa"));
 }
 
 #pragma endregion
