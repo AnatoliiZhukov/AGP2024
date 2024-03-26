@@ -81,7 +81,7 @@ void UCustomCharacterMovement::HandleMeshHeight(float DeltaSeconds)
 
 void UCustomCharacterMovement::HandleSprinting()
 {
-	bWantsToSprint ? MaxWalkSpeed = SprintSpeed : MaxWalkSpeed = WalkSpeed;
+	bWantsToSprint && bIsMovingForward ? MaxWalkSpeed = SprintSpeed : MaxWalkSpeed = WalkSpeed;
 }
 
 #pragma region PlayerInput
@@ -98,11 +98,6 @@ void UCustomCharacterMovement::OnMoveInputReceived(const FInputActionValue& Inpu
 	
 	OwningPlayerCharacter->AddMovementInput(ForwardDirection, MoveInput.Y);
 	OwningPlayerCharacter->AddMovementInput(RightDirection, MoveInput.X);
-
-	if ((bIsMovingForward && MoveInput.Y <= 0) || (!bIsMovingForward && MoveInput.Y > 0))
-	{
-		bIsMovingForward = !bIsMovingForward;
-	}
 
 	bIsMovingForward = MoveInput.Y > 0;
 }
@@ -140,35 +135,32 @@ void UCustomCharacterMovement::OnCrouchInputReceived(const FInputActionValue& In
 	{
 		if(CrouchInput)
 		{
-			OwningPlayerCharacter->Crouch();
+			bWantsToCrouch = true;
 			bJumpQueued = false;
 		}
 		else {OwningPlayerCharacter->UnCrouch();}
 	}
 	else if (CrouchInput)
 	{
-		if(IsCrouching()) {OwningPlayerCharacter->UnCrouch();}
-		else
+		if(!IsCrouching())
 		{
-			OwningPlayerCharacter->Crouch();
+			bWantsToCrouch = true;
 			bJumpQueued = false;
 		}
+		else {bWantsToCrouch = false;}
 	}
 	//  Dash logic
 	if(bCanDashOnCrouch && CrouchInput && !IsMovingOnGround())
 	{
 		OwningPlayerCharacter->LaunchCharacter(DashVelocity, false, true);
 	}
-
-	UE_LOG(LogTemp, Display, TEXT("eeee"));
 }
 
 void UCustomCharacterMovement::OnSprintInputReceived(const FInputActionValue& InputActionValue)
 {
 	const bool SprintInput = InputActionValue.Get<bool>();
-	bWantsToSprint = bIsMovingForward && SprintInput;
+	bWantsToSprint = SprintInput;
 	bWantsToCrouch = false;
-	UE_LOG(LogTemp, Display, TEXT("aaaa"));
 }
 
 #pragma endregion
