@@ -33,4 +33,6 @@ private:
 	UInputAction* CrouchAction;
 	UPROPERTY(EditDefaultsOnly, Category = "EnhancedInput", meta=(AllowPrivateAccess=true))
 	UInputAction* SprintAction;
+	UPROPERTY(EditDefaultsOnly, Category = "EnhancedInput", meta=(AllowPrivateAccess=true))
+	UInputAction* InteractAction;
 };

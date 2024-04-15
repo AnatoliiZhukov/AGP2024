@@ -1,8 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "Characters/PlayerCharacter.h"
 
 #include "Player/CharacterInputManager.h"
+#include "InteractionSystem/CharacterInteractionComponent.h"
 #include "Player/CustomCharacterMovement.h"
 
 const FName NAME_WeaponSocket(TEXT("weapon"));
@@ -10,7 +9,6 @@ const FName NAME_WeaponSocket(TEXT("weapon"));
 APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) : Super
 (ObjectInitializer.SetDefaultSubobjectClass<UCustomCharacterMovement>(ACharacter::CharacterMovementComponentName))
 {
-	
 	PrimaryActorTick.bCanEverTick = true;
 	
 	// Create ArmsMesh
@@ -25,6 +23,11 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 
 	// Create CharacterInputManager
 	CharacterInputManager = CreateDefaultSubobject<UCharacterInputManager>(TEXT("InputManager"));
+
+	// Create CharacterInteractionComponent
+	CharacterInteractionComponent = CreateDefaultSubobject<UCharacterInteractionComponent>(TEXT("InteractionComponent"));
+
+	CustomCharacterMovement->bCanWalkOffLedgesWhenCrouching = true;
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)

@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/InputComponent.h"
+#include "InteractionSystem/CharacterInteractionComponent.h"
 #include "Player/CustomCharacterMovement.h"
 
 UCharacterInputManager::UCharacterInputManager()
@@ -30,6 +31,10 @@ void UCharacterInputManager::SetupCharacterInput(UInputComponent* PlayerInputCom
 		UCustomCharacterMovement* CustomCharacterMovement =
 			GetOwner()->GetComponentByClass<UCustomCharacterMovement>();
 		check(CustomCharacterMovement);
+		
+		UCharacterInteractionComponent* CharacterInteractionComponent =
+			GetOwner()->GetComponentByClass<UCharacterInteractionComponent>();
+		check(CharacterInteractionComponent);
 		
 		EnhancedInputComponent->BindAction(
 			MoveAction,
@@ -60,5 +65,11 @@ void UCharacterInputManager::SetupCharacterInput(UInputComponent* PlayerInputCom
 			ETriggerEvent::Triggered,
 			CustomCharacterMovement,
 			&UCustomCharacterMovement::OnSprintInputReceived);
+
+		EnhancedInputComponent->BindAction(
+			InteractAction,
+			ETriggerEvent::Triggered,
+			CharacterInteractionComponent,
+			&UCharacterInteractionComponent::AttemptInteraction);
 	}
 }

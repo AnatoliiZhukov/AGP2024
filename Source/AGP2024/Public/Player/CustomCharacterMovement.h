@@ -30,21 +30,9 @@ public:
 	void OnSprintInputReceived(const FInputActionValue& InputActionValue);
 
 	virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
-	
-protected:
-	virtual void BeginPlay() override;
 
-	virtual void ApplyVelocityBraking(float DeltaTime, float Friction, float BrakingDeceleration) override;
-private:
-	UPROPERTY()
-	TObjectPtr<APlayerCharacter> OwningPlayerCharacter = nullptr;
-
-	bool bIsMovingForward;
-	
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Look")
 	float LookSens = 0.5f;
-	
-	bool bJumpQueued = false;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Crouch")
 	bool bToggleCrouch = false;
@@ -59,11 +47,28 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Crouch")
 	FVector DashVelocity = FVector(0, 0, -1000);
 	
-	bool bWantsToSprint = false;
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Sprint")
 	float SprintSpeed = 900.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Sprint")
 	float WalkSpeed = 600.0f;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetWalkSpeed() const {return WalkSpeed;}
+	
+	UPROPERTY(BlueprintReadOnly)
+	bool bWantsToSprint = false;
+	
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void ApplyVelocityBraking(float DeltaTime, float Friction, float BrakingDeceleration) override;
+
+	bool bIsMovingForward;
+	bool bJumpQueued = false;
+	
+private:
+	UPROPERTY()
+	TObjectPtr<APlayerCharacter> OwningPlayerCharacter = nullptr;
 	
 	void HandleMeshRotation();
 	void HandleJumping();
