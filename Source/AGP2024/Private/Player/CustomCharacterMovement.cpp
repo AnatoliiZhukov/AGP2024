@@ -27,7 +27,7 @@ void UCustomCharacterMovement::OnMovementUpdated(float DeltaSeconds, const FVect
 	HandleMeshRotation();
 	HandleJumping();
 	HandleMeshHeight(DeltaSeconds);
-	HandleSprinting();
+	HandleRunning();
 }
 
 void UCustomCharacterMovement::ApplyVelocityBraking(float DeltaTime, float Friction, float BrakingDeceleration)
@@ -79,9 +79,9 @@ void UCustomCharacterMovement::HandleMeshHeight(float DeltaSeconds)
 	OwningPlayerCharacter->GetArmsMesh()->SetRelativeLocation(NewLocation);
 }
 
-void UCustomCharacterMovement::HandleSprinting()
+void UCustomCharacterMovement::HandleRunning()
 {
-	bWantsToSprint && bIsMovingForward ? MaxWalkSpeed = SprintSpeed : MaxWalkSpeed = WalkSpeed;
+	bWantsToRun && bIsMovingForward ? MaxWalkSpeed = RunSpeed : MaxWalkSpeed = WalkSpeed;
 }
 
 #pragma region PlayerInput
@@ -104,7 +104,7 @@ void UCustomCharacterMovement::OnMoveInputReceived(const FInputActionValue& Inpu
 
 void UCustomCharacterMovement::OnLookInputReceived(const FInputActionValue& InputActionValue)
 {
-	const FVector2D LookInput = InputActionValue.Get<FVector2D>() * LookSens;
+	const FVector2D LookInput = InputActionValue.Get<FVector2D>() * LookSensitivity;
 
 	OwningPlayerCharacter->AddControllerYawInput(LookInput.X);
 	OwningPlayerCharacter->AddControllerPitchInput(LookInput.Y);
@@ -156,10 +156,10 @@ void UCustomCharacterMovement::OnCrouchInputReceived(const FInputActionValue& In
 	}
 }
 
-void UCustomCharacterMovement::OnSprintInputReceived(const FInputActionValue& InputActionValue)
+void UCustomCharacterMovement::OnRunInputReceived(const FInputActionValue& InputActionValue)
 {
 	const bool SprintInput = InputActionValue.Get<bool>();
-	bWantsToSprint = SprintInput;
+	bWantsToRun = SprintInput;
 	bWantsToCrouch = false;
 }
 

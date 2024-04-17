@@ -4,8 +4,7 @@
 #include "Components/ActorComponent.h"
 #include "CharacterInteractionComponent.generated.h"
 
-
-class ACharacterBase;
+class APlayerCharacter;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class AGP2024_API UCharacterInteractionComponent : public UActorComponent
@@ -27,7 +26,7 @@ protected:
 
 private:
 	UPROPERTY()
-	ACharacterBase* OwningCharacter = nullptr;
+	APlayerCharacter* OwningPlayerCharacter = nullptr;
 	
 	ECollisionChannel CollisionTraceChannel = ECC_GameTraceChannel1;
 	

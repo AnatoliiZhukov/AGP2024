@@ -1,6 +1,5 @@
 #include "InteractionSystem/CharacterInteractionComponent.h"
-
-#include "Characters/CharacterBase.h"
+#include "Characters/PlayerCharacter.h"
 #include "InteractionSystem/InteractableInterface.h"
 
 UCharacterInteractionComponent::UCharacterInteractionComponent()
@@ -13,7 +12,7 @@ void UCharacterInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	OwningCharacter = Cast<ACharacterBase>(GetOwner());
+	OwningPlayerCharacter = Cast<APlayerCharacter>(GetOwner());
 }
 
 void UCharacterInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -25,9 +24,9 @@ void UCharacterInteractionComponent::TickComponent(float DeltaTime, ELevelTick T
 
 AActor* UCharacterInteractionComponent::GetInteractableInRange() const
 {
-	if(!GetWorld() || !OwningCharacter) return nullptr;
+	if(!GetWorld() || !OwningPlayerCharacter) return nullptr;
 
-	if(AController* OwningController = OwningCharacter->GetController())
+	if(AController* OwningController = OwningPlayerCharacter->GetController())
 	{
 		FVector CameraLocation;
 		FRotator CameraRotation;

@@ -27,12 +27,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnCrouchInputReceived(const FInputActionValue& InputActionValue);
 	UFUNCTION(BlueprintCallable)
-	void OnSprintInputReceived(const FInputActionValue& InputActionValue);
+	void OnRunInputReceived(const FInputActionValue& InputActionValue);
 
 	virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Look")
-	float LookSens = 0.5f;
+	float LookSensitivity = 0.5f;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Crouch")
 	bool bToggleCrouch = false;
@@ -48,7 +48,7 @@ public:
 	FVector DashVelocity = FVector(0, 0, -1000);
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Sprint")
-	float SprintSpeed = 900.0f;
+	float RunSpeed = 900.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Sprint")
 	float WalkSpeed = 600.0f;
 
@@ -56,7 +56,7 @@ public:
 	float GetWalkSpeed() const {return WalkSpeed;}
 	
 	UPROPERTY(BlueprintReadOnly)
-	bool bWantsToSprint = false;
+	bool bWantsToRun = false;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -73,5 +73,5 @@ private:
 	void HandleMeshRotation();
 	void HandleJumping();
 	void HandleMeshHeight(float DeltaSeconds);
-	void HandleSprinting();
+	void HandleRunning();
 };

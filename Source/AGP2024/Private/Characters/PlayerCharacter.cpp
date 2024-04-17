@@ -1,14 +1,18 @@
 #include "Characters/PlayerCharacter.h"
-
-#include "Player/CharacterInputManager.h"
 #include "InteractionSystem/CharacterInteractionComponent.h"
 #include "Player/CustomCharacterMovement.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "NavigationSystem.h"
+#include "Components/InputComponent.h"
 
 const FName NAME_WeaponSocket(TEXT("weapon"));
 
 APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) : Super
 (ObjectInitializer.SetDefaultSubobjectClass<UCustomCharacterMovement>(ACharacter::CharacterMovementComponentName))
 {
+	CustomCharacterMovement = Cast<UCustomCharacterMovement>(GetCharacterMovement());
+	
 	PrimaryActorTick.bCanEverTick = true;
 	
 	// Create ArmsMesh
@@ -21,12 +25,9 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 	WeaponMesh->SetupAttachment(ArmsMesh);
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	// Create CharacterInputManager
-	CharacterInputManager = CreateDefaultSubobject<UCharacterInputManager>(TEXT("InputManager"));
-
 	// Create CharacterInteractionComponent
 	CharacterInteractionComponent = CreateDefaultSubobject<UCharacterInteractionComponent>(TEXT("InteractionComponent"));
-
+	
 	CustomCharacterMovement->bCanWalkOffLedgesWhenCrouching = true;
 }
 
@@ -48,6 +49,57 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	if (const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
-		CharacterInputManager->SetupCharacterInput(PlayerInputComponent, PlayerController);
+		// Add mapping context
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
+			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(PlayerCharacterMappingContext, 0);
+		}
+		
+		UCustomCharacterMovement* CustomMovementTemp = GetComponentByClass<UCustomCharacterMovement>();
+		check(CustomMovementTemp)
+		UCharacterInteractionComponent* CharacterInteractionTemp = GetComponentByClass<UCharacterInteractionComponent>();
+		check(CharacterInteractionTemp)
+		
+		// Bind functions to input actions
+		if (UEnhancedInputComponent* EnhancedInputComponent =
+			CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+		{
+			EnhancedInputComponent->BindAction(
+				MoveAction,
+				ETriggerEvent::Triggered,
+				CustomMovementTemp,
+				&UCustomCharacterMovement::OnMoveInputReceived);
+		
+			EnhancedInputComponent->BindAction(
+				LookAction,
+				ETriggerEvent::Triggered,
+				CustomMovementTemp,
+				&UCustomCharacterMovement::OnLookInputReceived);
+			
+			EnhancedInputComponent->BindAction(
+				JumpAction,
+				ETriggerEvent::Triggered,
+				CustomMovementTemp,
+				&UCustomCharacterMovement::OnJumpInputReceived);
+			
+			EnhancedInputComponent->BindAction(
+				CrouchAction,
+				ETriggerEvent::Triggered,
+				CustomMovementTemp,
+				&UCustomCharacterMovement::OnCrouchInputReceived);
+			
+			EnhancedInputComponent->BindAction(
+				SprintAction,
+				ETriggerEvent::Triggered,
+				CustomMovementTemp,
+				&UCustomCharacterMovement::OnRunInputReceived);
+			
+			EnhancedInputComponent->BindAction(
+				InteractAction,
+				ETriggerEvent::Triggered,
+				CharacterInteractionTemp,
+				&UCharacterInteractionComponent::AttemptInteraction);
+		}
 	}
 }
