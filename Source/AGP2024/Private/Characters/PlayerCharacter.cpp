@@ -6,7 +6,7 @@
 #include "NavigationSystem.h"
 #include "Components/InputComponent.h"
 
-const FName NAME_WeaponSocket(TEXT("weapon"));
+const FName NAME_WeaponSocket(TEXT("weapon_R"));
 
 APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) : Super
 (ObjectInitializer.SetDefaultSubobjectClass<UCustomCharacterMovement>(ACharacter::CharacterMovementComponentName))
@@ -22,7 +22,7 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 
 	// Create WeaponMesh
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
-	WeaponMesh->SetupAttachment(ArmsMesh);
+	WeaponMesh->SetupAttachment(ArmsMesh, NAME_WeaponSocket);
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	// Create CharacterInteractionComponent
