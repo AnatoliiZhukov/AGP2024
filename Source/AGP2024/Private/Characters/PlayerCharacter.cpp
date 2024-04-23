@@ -17,13 +17,15 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 	
 	// Create ArmsMesh
 	ArmsMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ArmsMesh"));
+	ArmsMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	ArmsMesh->SetupAttachment(GetMesh());
 	ArmsMesh->CastShadow = false;
 
 	// Create WeaponMesh
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
-	WeaponMesh->SetupAttachment(ArmsMesh, NAME_WeaponSocket);
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	WeaponMesh->SetupAttachment(ArmsMesh, NAME_WeaponSocket);
+	WeaponMesh->CastShadow = false;
 
 	// Create CharacterInteractionComponent
 	CharacterInteractionComponent = CreateDefaultSubobject<UCharacterInteractionComponent>(TEXT("InteractionComponent"));
