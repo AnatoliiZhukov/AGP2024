@@ -41,7 +41,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Crouch")
 	float CrouchHeight = -20.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Crouch")
-	float CrouchSpeed = 10.0f;
+	float CrouchSpeed = 12.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Crouch")
 	bool bCanDashOnCrouch = true;
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Crouch")

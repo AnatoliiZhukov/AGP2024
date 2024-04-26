@@ -19,7 +19,7 @@ void UCharacterInteractionComponent::TickComponent(float DeltaTime, ELevelTick T
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
-	TargetInteractable = GetInteractableInRange();
+	TargetActor = GetInteractableInRange();
 }
 
 AActor* UCharacterInteractionComponent::GetInteractableInRange() const
@@ -44,9 +44,13 @@ AActor* UCharacterInteractionComponent::GetInteractableInRange() const
 	return nullptr;
 }
 
-void UCharacterInteractionComponent::AttemptInteraction()
+void UCharacterInteractionComponent::OnInteractInputReceived()
 {
-	if(!TargetInteractable) return;
-	
-	Cast<IInteractableInterface>(TargetInteractable)->Interact();
+	if(TargetActor)
+	{
+		if(IInteractableInterface* TargetInteractable = Cast<IInteractableInterface>(TargetActor))
+		{
+			TargetInteractable->Interact();
+		}
+	}
 }

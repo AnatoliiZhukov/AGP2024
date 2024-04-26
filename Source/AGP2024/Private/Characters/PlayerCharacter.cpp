@@ -3,7 +3,7 @@
 #include "Player/CustomCharacterMovement.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "NavigationSystem.h"
+#include "CombatSystem/CombatComponent.h"
 #include "Components/InputComponent.h"
 
 const FName NAME_WeaponSocket(TEXT("weapon_R"));
@@ -13,7 +13,7 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 {
 	CustomCharacterMovement = Cast<UCustomCharacterMovement>(GetCharacterMovement());
 	
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	
 	// Create ArmsMesh
 	ArmsMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ArmsMesh"));
@@ -29,20 +29,15 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 
 	// Create CharacterInteractionComponent
 	CharacterInteractionComponent = CreateDefaultSubobject<UCharacterInteractionComponent>(TEXT("InteractionComponent"));
-	
+
+	// Create CombatComponent
+	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 	CustomCharacterMovement->bCanWalkOffLedgesWhenCrouching = true;
 }
 
-void APlayerCharacter::Tick(float DeltaSeconds)
+void APlayerCharacter::Damage()
 {
-	Super::Tick(DeltaSeconds);
-}
-
-void APlayerCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-
-	
+	CombatComponent->GameOver();
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -62,6 +57,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		check(CustomMovementTemp)
 		UCharacterInteractionComponent* CharacterInteractionTemp = GetComponentByClass<UCharacterInteractionComponent>();
 		check(CharacterInteractionTemp)
+		UCombatComponent* CombatCompTemp = GetComponentByClass<UCombatComponent>();
+		check(CombatCompTemp)
 		
 		// Bind functions to input actions
 		if (UEnhancedInputComponent* EnhancedInputComponent =
@@ -101,7 +98,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 				InteractAction,
 				ETriggerEvent::Triggered,
 				CharacterInteractionTemp,
-				&UCharacterInteractionComponent::AttemptInteraction);
+				&UCharacterInteractionComponent::OnInteractInputReceived);
+			
+			EnhancedInputComponent->BindAction(
+				AttackAction,
+				ETriggerEvent::Triggered,
+				CombatCompTemp,
+				&UCombatComponent::OnAttackInputReceived);
 		}
 	}
 }

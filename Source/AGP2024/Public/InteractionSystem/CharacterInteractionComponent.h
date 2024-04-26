@@ -19,8 +19,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "InteractionProperties")
 	float InteractRange = 400.0f;
 
-	void AttemptInteraction();
-	
+	void OnInteractInputReceived();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -31,6 +31,6 @@ private:
 	ECollisionChannel CollisionTraceChannel = ECC_GameTraceChannel1;
 	
 	UPROPERTY()
-	AActor* TargetInteractable = nullptr;
+	AActor* TargetActor = nullptr;
 	AActor* GetInteractableInRange() const;
 };
