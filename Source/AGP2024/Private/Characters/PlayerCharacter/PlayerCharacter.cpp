@@ -1,9 +1,9 @@
-#include "Characters/PlayerCharacter.h"
-#include "InteractionSystem/CharacterInteractionComponent.h"
-#include "Player/CustomCharacterMovement.h"
+#include "Characters/PlayerCharacter/PlayerCharacter.h"
+#include "Characters/PlayerCharacter/CharacterInteractionComponent.h"
+#include "Characters/PlayerCharacter/CustomCharacterMovement.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "CombatSystem/CombatComponent.h"
+#include "Characters/PlayerCharacter/CombatComponent.h"
 #include "Components/InputComponent.h"
 
 const FName NAME_WeaponSocket(TEXT("weapon_R"));

@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Player/CustomCharacterMovement.h"
+#include "Characters/PlayerCharacter/CustomCharacterMovement.h"
 
 #include "InputActionValue.h"
-#include "Characters/PlayerCharacter.h"
+#include "Characters/PlayerCharacter/PlayerCharacter.h"
 
 UCustomCharacterMovement::UCustomCharacterMovement()
 {

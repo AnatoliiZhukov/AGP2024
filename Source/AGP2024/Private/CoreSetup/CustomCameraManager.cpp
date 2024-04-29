@@ -1,7 +1,7 @@
 // Copyright:       Copyright (C) 2022 Doğa Can Yanıkoğlu
 
-#include "Player/CustomCameraManager.h"
-#include "Characters/PlayerCharacter.h"
+#include "CoreSetup/CustomCameraManager.h"
+#include "Characters/PlayerCharacter/PlayerCharacter.h"
 
 ACustomCameraManager::ACustomCameraManager()
 {

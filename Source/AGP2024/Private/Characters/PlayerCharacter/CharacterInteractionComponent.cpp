@@ -1,5 +1,5 @@
-#include "InteractionSystem/CharacterInteractionComponent.h"
-#include "Characters/PlayerCharacter.h"
+#include "Characters/PlayerCharacter/CharacterInteractionComponent.h"
+#include "Characters/PlayerCharacter/PlayerCharacter.h"
 #include "InteractionSystem/InteractableInterface.h"
 
 UCharacterInteractionComponent::UCharacterInteractionComponent()

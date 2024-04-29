@@ -1,9 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DamageableInterface.h"
+#include "CombatSystem/DamageableInterface.h"
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
+
+class UEnemySensingComponent;
 
 UCLASS()
 class AGP2024_API AEnemyCharacter : public ACharacter, public IDamageableInterface
@@ -19,4 +21,7 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	TObjectPtr<UEnemySensingComponent> EnemySensingComponent;
 };

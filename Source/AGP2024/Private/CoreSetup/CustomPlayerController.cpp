@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Player/CustomPlayerController.h"
+#include "CoreSetup/CustomPlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Characters/PlayerCharacter.h"
-#include "Player/CustomCameraManager.h"
-#include "Player/CustomHUD.h"
+#include "Characters/PlayerCharacter/PlayerCharacter.h"
+#include "CoreSetup/CustomCameraManager.h"
+#include "CoreSetup/CustomHUD.h"
 
 void ACustomPlayerController::BeginPlay()
 {

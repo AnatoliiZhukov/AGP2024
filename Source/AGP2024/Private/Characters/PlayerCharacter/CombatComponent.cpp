@@ -1,6 +1,6 @@
-#include "CombatSystem/CombatComponent.h"
+#include "Characters/PlayerCharacter/CombatComponent.h"
 
-#include "Characters/PlayerCharacter.h"
+#include "Characters/PlayerCharacter/PlayerCharacter.h"
 
 // Sets default values for this component's properties
 UCombatComponent::UCombatComponent()
