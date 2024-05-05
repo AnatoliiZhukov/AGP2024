@@ -1,14 +1,14 @@
-#include "Characters/PlayerCharacter/CombatComponent.h"
+#include "Characters/PlayerCharacter/PlayerCombatComponent.h"
 
 #include "Characters/PlayerCharacter/PlayerCharacter.h"
 
 // Sets default values for this component's properties
-UCombatComponent::UCombatComponent()
+UPlayerCombatComponent::UPlayerCombatComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
+	AttackCooldown = 1.5f;
 }
 
-void UCombatComponent::BeginPlay()
+void UPlayerCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -21,7 +21,7 @@ void UCombatComponent::BeginPlay()
 	}
 }
 
-void UCombatComponent::OnAttackInputReceived()
+void UPlayerCombatComponent::OnAttackInputReceived()
 {
 	// Play the attack montage if it's not on cooldown and no montage is currently playing
 	if(!AttackIsOnCooldown() && AttackMontage && !ArmsMeshAnimInstance->Montage_IsPlaying(NULL))
@@ -35,7 +35,7 @@ void UCombatComponent::OnAttackInputReceived()
 	}
 }
 
-void UCombatComponent::Attack()
+void UPlayerCombatComponent::Attack() const
 {
 	if(UWorld* World = GetWorld())
 	{
@@ -62,21 +62,18 @@ void UCombatComponent::Attack()
 			);
 			
 			// Process sweep result
-			if (AActor* HitActor = Hit.GetActor())
+			if (AActor* HitActor = Hit.GetActor(); IDamageableInterface* HitDamageable = Cast<IDamageableInterface>(HitActor))
 			{
-				if (IDamageableInterface* HitDamageable = Cast<IDamageableInterface>(HitActor))
+				if(ActorIsVisible(CameraLocation, HitActor))
 				{
-					if(ActorIsVisible(CameraLocation, HitActor))
-					{
-						HitDamageable->Damage();
-					}
+					HitDamageable->Damage();
 				}
 			}
 		}
 	}
 }
 
-void UCombatComponent::Block()
+void UPlayerCombatComponent::Block() const
 {
 	if(BlockMontage)
 	{
@@ -84,22 +81,7 @@ void UCombatComponent::Block()
 	}
 }
 
-void UCombatComponent::GameOver()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Player was killed, game over"))
-}
-
-bool UCombatComponent::AttackIsOnCooldown() const
-{
-	if(const UWorld* World = GetWorld())
-	{
-		const float TimeSinceLastAttack = World->GetTimeSeconds() - LastAttackTime;
-		return TimeSinceLastAttack < AttackCooldown;
-	}
-	return false;
-}
-
-bool UCombatComponent::ActorIsVisible(const FVector& CameraLocation, AActor* Actor)
+bool UPlayerCombatComponent::ActorIsVisible(const FVector& CameraLocation, AActor* Actor) const
 {
 	if (UWorld* World = GetWorld())
 	{
@@ -113,9 +95,7 @@ bool UCombatComponent::ActorIsVisible(const FVector& CameraLocation, AActor* Act
 		CollisionParams.AddIgnoredActor(GetOwner());
 		for (int i = 0; i < 8; i++)
 		{
-			FHitResult VisibilityCheckHit;
-			DrawDebugLine(World, CameraLocation, Corners[i], FColor::Blue, false, 1.0f);
-			if (!World->LineTraceSingleByChannel(
+			if (FHitResult VisibilityCheckHit; !World->LineTraceSingleByChannel(
 				VisibilityCheckHit,
 				CameraLocation,
 				Corners[i],

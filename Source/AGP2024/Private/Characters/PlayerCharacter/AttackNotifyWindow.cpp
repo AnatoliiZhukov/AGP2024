@@ -1,7 +1,7 @@
 #include "Characters/PlayerCharacter/AttackNotifyWindow.h"
 
 #include "Characters/PlayerCharacter/PlayerCharacter.h"
-#include "Characters/PlayerCharacter/CombatComponent.h"
+#include "Characters/PlayerCharacter/PlayerCombatComponent.h"
 
 void UAttackNotifyWindow::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
 	float TotalDuration, const FAnimNotifyEventReference& EventReference)
@@ -21,6 +21,6 @@ void UAttackNotifyWindow::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequ
 
 	if(AttackingPlayerCharacter)
 	{
-		AttackingPlayerCharacter->CombatComponent->Attack();
+		AttackingPlayerCharacter->PlayerCombatComponent->Attack();
 	}
 }

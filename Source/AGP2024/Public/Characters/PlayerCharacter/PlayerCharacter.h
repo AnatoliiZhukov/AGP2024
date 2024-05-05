@@ -9,7 +9,7 @@ class UCustomCharacterMovement;
 class UCharacterInteractionComponent;
 class UInputAction;
 class UInputMappingContext;
-class UCombatComponent;
+class UPlayerCombatComponent;
 
 const FName NAME_CameraBone(TEXT("camera"));
 
@@ -20,8 +20,7 @@ class AGP2024_API APlayerCharacter : public ACharacter, public IDamageableInterf
 
 public:
 	APlayerCharacter(const FObjectInitializer& ObjectInitializer);
-
-	// Getters
+	
 	FVector GetCameraTargetLocation() const { return ArmsMesh->GetSocketLocation(NAME_CameraBone); }
 	FRotator GetCameraTargetRotation() const { return ArmsMesh->GetSocketRotation(NAME_CameraBone); }
 
@@ -36,7 +35,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UCharacterInteractionComponent> CharacterInteractionComponent;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<UCombatComponent> CombatComponent;
+	TObjectPtr<UPlayerCombatComponent> PlayerCombatComponent;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerInput", meta=(AllowPrivateAccess=true))

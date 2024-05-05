@@ -3,7 +3,7 @@
 #include "Characters/PlayerCharacter/CustomCharacterMovement.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Characters/PlayerCharacter/CombatComponent.h"
+#include "Characters/PlayerCharacter/PlayerCombatComponent.h"
 #include "Components/InputComponent.h"
 
 const FName NAME_WeaponSocket(TEXT("weapon_R"));
@@ -31,13 +31,13 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 	CharacterInteractionComponent = CreateDefaultSubobject<UCharacterInteractionComponent>(TEXT("InteractionComponent"));
 
 	// Create CombatComponent
-	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+	PlayerCombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>(TEXT("CombatComponent"));
 	CustomCharacterMovement->bCanWalkOffLedgesWhenCrouching = true;
 }
 
 void APlayerCharacter::Damage()
 {
-	CombatComponent->GameOver();
+	UE_LOG(LogTemp, Warning, TEXT("Player was hit"))
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -57,7 +57,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		check(CustomMovementTemp)
 		UCharacterInteractionComponent* CharacterInteractionTemp = GetComponentByClass<UCharacterInteractionComponent>();
 		check(CharacterInteractionTemp)
-		UCombatComponent* CombatCompTemp = GetComponentByClass<UCombatComponent>();
+		UPlayerCombatComponent* CombatCompTemp = GetComponentByClass<UPlayerCombatComponent>();
 		check(CombatCompTemp)
 		
 		// Bind functions to input actions
@@ -104,7 +104,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 				AttackAction,
 				ETriggerEvent::Triggered,
 				CombatCompTemp,
-				&UCombatComponent::OnAttackInputReceived);
+				&UPlayerCombatComponent::OnAttackInputReceived);
 		}
 	}
 }
