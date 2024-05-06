@@ -36,7 +36,7 @@ protected:
 	virtual void PostInitializeComponents() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Properties")
-	float ArrowLifespan = 2.f;
+	float ArrowLifespan = 5.f;
 	FTimerHandle ArrowLifespanTimerHandle;
 	void OnArrowLifespanExpire();
 	
@@ -46,4 +46,7 @@ protected:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION()
+	void PushToCurrentArrowPool();
 };

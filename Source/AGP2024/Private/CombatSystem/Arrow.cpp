@@ -13,8 +13,7 @@ AArrow::AArrow()
 	ArrowCollision->SetCollisionProfileName("IgnoreOnlyPawn");
 	ArrowCollision->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Block);
 	ArrowCollision->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
-	ArrowCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-	
+	ArrowCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
 	RootComponent = ArrowCollision;
 
 	ArrowMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArrowMesh"));
@@ -33,12 +32,11 @@ AArrow::AArrow()
 void AArrow::Damage()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Arrow hit"))
+	PushToCurrentArrowPool();
 }
 
 void AArrow::OnPushed()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Arrow pushed"))
-	
 	SetActorHiddenInGame(true);
 	ArrowMovementComponent->Deactivate();
 }
@@ -46,8 +44,6 @@ void AArrow::OnPushed()
 void AArrow::OnPulled(UArrowPoolComponent* ArrowPool)
 {
 	if(!CurrentArrowPool) CurrentArrowPool = ArrowPool;
-	
-	UE_LOG(LogTemp, Warning, TEXT("Arrow pulled"))
 	
 	SetActorHiddenInGame(false);
 	ArrowMovementComponent->Activate();
@@ -67,15 +63,29 @@ void AArrow::PostInitializeComponents()
 
 void AArrow::OnArrowLifespanExpire()
 {
-	if(CurrentArrowPool)
-	{
-		bool Result;
-		CurrentArrowPool->Push(this, Result);
-	}
+	PushToCurrentArrowPool();
 }
 
 void AArrow::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                    FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Arrow collided with an object"))
+	if(IDamageableInterface* HitDamageable = Cast<IDamageableInterface>(OtherActor))
+	{
+		HitDamageable->Damage();
+		PushToCurrentArrowPool();
+	}
+	else
+	{
+		ArrowMovementComponent->StopMovementImmediately();
+		ArrowCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
+void AArrow::PushToCurrentArrowPool()
+{
+	if(CurrentArrowPool)
+	{
+		bool Result;
+		CurrentArrowPool->Push(this, Result);
+	}
 }

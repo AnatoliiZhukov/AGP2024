@@ -1,6 +1,7 @@
 #include "Characters/PlayerCharacter/PlayerCombatComponent.h"
 
 #include "Characters/PlayerCharacter/PlayerCharacter.h"
+#include "CombatSystem/Arrow.h"
 
 // Sets default values for this component's properties
 UPlayerCombatComponent::UPlayerCombatComponent()
@@ -66,7 +67,17 @@ void UPlayerCombatComponent::Attack() const
 			{
 				if(ActorIsVisible(CameraLocation, HitActor))
 				{
-					HitDamageable->Damage();
+					if(Cast<AArrow>(HitDamageable))
+					{
+						HitDamageable->Damage();
+						Block();
+						UE_LOG(LogTemp, Warning, TEXT("Block"))
+						return;
+					}
+					if(BlockMontage && !!ArmsMeshAnimInstance->Montage_IsPlaying(BlockMontage))
+					{
+						HitDamageable->Damage();
+					}
 				}
 			}
 		}
