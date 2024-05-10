@@ -16,9 +16,8 @@ public:
 
 	UFUNCTION()
 	void OnAttackInputReceived(); // Attempts to play the AttackMontage
-
-	UFUNCTION()
-	void Attack() const; // Tries to find an IDamageable in front of the player and call Damage() on it
+	
+	virtual void Attack() override; // Tries to find an IDamageable in front of the player and call Damage() on it
 	UFUNCTION()
 	void Block() const; // Plays the BlockMontage
 	
@@ -26,14 +25,12 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Animation montages")
-	UAnimMontage* AttackMontage = nullptr;
-	UPROPERTY(EditDefaultsOnly, Category = "Animation montages")
 	UAnimMontage* BlockMontage = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
-	float AttackRange = 30.0f;
+	float AttackRange = 40.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
-	float AttackSweepRadius = 40.0f;
+	float AttackSweepRadius = 50.0f;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "References")
 	APlayerCharacter* OwningPlayerCharacter = nullptr;

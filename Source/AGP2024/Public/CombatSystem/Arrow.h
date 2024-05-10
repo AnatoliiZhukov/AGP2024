@@ -8,6 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "Arrow.generated.h"
 
+class UArrowShooterComponent;
 class UProjectileMovementComponent;
 class UArrowMovementComponent;
 class USphereComponent;
@@ -19,6 +20,11 @@ class AGP2024_API AArrow : public AActor, public IDamageableInterface, public IA
 	
 public:	
 	AArrow();
+	
+	virtual void Damage() override;
+
+	virtual void OnPushed() override;
+	virtual void OnPulled() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	TObjectPtr<USphereComponent> ArrowCollision;
@@ -27,26 +33,23 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UProjectileMovementComponent> ArrowMovementComponent;
 
-	virtual void Damage() override;
-
-	virtual void OnPushed() override;
-	virtual void OnPulled(UArrowPoolComponent* ArrowPool) override;
+	void AssignToShooter(UArrowShooterComponent* NewShooter) {AssignedShooter = NewShooter;}
 	
 protected:
 	virtual void PostInitializeComponents() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Properties")
-	float ArrowLifespan = 5.f;
+	float ArrowLifespan = 10.f;
 	FTimerHandle ArrowLifespanTimerHandle;
 	void OnArrowLifespanExpire();
 	
 	UPROPERTY(BlueprintReadOnly, Category = "References")
-	UArrowPoolComponent* CurrentArrowPool = nullptr;
+	UArrowShooterComponent* AssignedShooter = nullptr;
 	
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit);
 
 	UFUNCTION()
-	void PushToCurrentArrowPool();
+	void PushToArrowPool();
 };

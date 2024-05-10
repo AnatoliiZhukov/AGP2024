@@ -5,6 +5,14 @@
 UEnemyCombatComponent::UEnemyCombatComponent()
 {
 	AttackCooldown = 2.0f;
+	bAttackContinuously = false;
+}
+
+void UEnemyCombatComponent::Attack()
+{
+	Super::Attack();
+
+	
 }
 
 void UEnemyCombatComponent::BeginPlay()

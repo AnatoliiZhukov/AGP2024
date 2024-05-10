@@ -1,5 +1,3 @@
-
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -16,11 +14,10 @@ class AGP2024_API UEnemyCombatComponent : public UCombatComponentBase
 public:
 	UEnemyCombatComponent();
 
+	virtual void Attack() override;
+
 protected:
 	virtual void BeginPlay() override;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Animation montages")
-	UAnimMontage* AttackMontage = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "References")
 	AEnemyCharacter* OwningEnemyCharacter = nullptr;

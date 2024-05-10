@@ -20,5 +20,5 @@ class AGP2024_API IArrowPoolInterface
 
 public:
 	virtual void OnPushed() = 0;
-	virtual void OnPulled(UArrowPoolComponent* ArrowPool) = 0;
+	virtual void OnPulled() = 0;
 };

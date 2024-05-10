@@ -1,16 +1,22 @@
 #include "Characters/PlayerCharacter/AttackNotifyWindow.h"
 
-#include "Characters/PlayerCharacter/PlayerCharacter.h"
-#include "Characters/PlayerCharacter/PlayerCombatComponent.h"
+#include "Characters/CombatComponentBase.h"
 
 void UAttackNotifyWindow::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
-	float TotalDuration, const FAnimNotifyEventReference& EventReference)
+                                      float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
-
-	if(!AttackingPlayerCharacter)
+	
+	if(!RelatedCombatComponent)
 	{
-		AttackingPlayerCharacter = Cast<APlayerCharacter>(MeshComp->GetOwner());
+		if(UCombatComponentBase* CombatComponent = MeshComp->GetOwner()->GetComponentByClass<UCombatComponentBase>())
+		{
+			RelatedCombatComponent = CombatComponent;
+		}
+	}
+	if(RelatedCombatComponent && !RelatedCombatComponent->bAttackContinuously)
+	{
+		RelatedCombatComponent->Attack();
 	}
 }
 
@@ -19,8 +25,10 @@ void UAttackNotifyWindow::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequ
 {
 	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime, EventReference);
 
-	if(AttackingPlayerCharacter)
+	if(RelatedCombatComponent && !RelatedCombatComponent->bAttackContinuously) return;
+	
+	if(RelatedCombatComponent)
 	{
-		AttackingPlayerCharacter->PlayerCombatComponent->Attack();
+		RelatedCombatComponent->Attack();
 	}
 }

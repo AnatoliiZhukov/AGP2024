@@ -3,7 +3,11 @@
 UCombatComponentBase::UCombatComponentBase()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	
+}
+
+void UCombatComponentBase::Attack()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Attacking"))
 }
 
 bool UCombatComponentBase::AttackIsOnCooldown() const

@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
 
+class UArrowShooterComponent;
 class UArrowPoolComponent;
 class UEnemyCombatComponent;
 class UEnemySensingComponent;
@@ -31,10 +32,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	TObjectPtr<UEnemyCombatComponent> EnemyCombatComponent;
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	TObjectPtr<UArrowPoolComponent> EnemyArrowPool;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Animation montages")
-	UAnimMontage* AttackMontage = nullptr;
+	TObjectPtr<UArrowShooterComponent> EnemyShooterComponent;
 	
 	UFUNCTION()
 	void OnSeePawn(APawn *OtherPawn);

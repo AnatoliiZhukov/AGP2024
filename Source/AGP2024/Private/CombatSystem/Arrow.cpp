@@ -1,6 +1,6 @@
 #include "CombatSystem/Arrow.h"
 
-#include "CombatSystem/ArrowPoolComponent.h"
+#include "CombatSystem/ArrowShooterComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -10,10 +10,8 @@ AArrow::AArrow()
 	
 	ArrowCollision = CreateDefaultSubobject<USphereComponent>(TEXT("ArrowCollision"));
 	ArrowCollision->SetSphereRadius(5.f);
-	ArrowCollision->SetCollisionProfileName("IgnoreOnlyPawn");
-	ArrowCollision->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Block);
-	ArrowCollision->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
-	ArrowCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
+	ArrowCollision->SetCollisionResponseToAllChannels(ECR_Block);
+	ArrowCollision->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Ignore);
 	RootComponent = ArrowCollision;
 
 	ArrowMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArrowMesh"));
@@ -32,22 +30,18 @@ AArrow::AArrow()
 void AArrow::Damage()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Arrow hit"))
-	PushToCurrentArrowPool();
+	PushToArrowPool();
 }
 
 void AArrow::OnPushed()
 {
-	SetActorHiddenInGame(true);
 	ArrowMovementComponent->Deactivate();
+	GetWorldTimerManager().ClearTimer(ArrowLifespanTimerHandle);
 }
 
-void AArrow::OnPulled(UArrowPoolComponent* ArrowPool)
+void AArrow::OnPulled()
 {
-	if(!CurrentArrowPool) CurrentArrowPool = ArrowPool;
-	
-	SetActorHiddenInGame(false);
 	ArrowMovementComponent->Activate();
-	
 	GetWorldTimerManager().SetTimer(ArrowLifespanTimerHandle, this, &AArrow::OnArrowLifespanExpire, ArrowLifespan, false);
 }
 
@@ -63,7 +57,7 @@ void AArrow::PostInitializeComponents()
 
 void AArrow::OnArrowLifespanExpire()
 {
-	PushToCurrentArrowPool();
+	PushToArrowPool();
 }
 
 void AArrow::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -72,20 +66,20 @@ void AArrow::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimi
 	if(IDamageableInterface* HitDamageable = Cast<IDamageableInterface>(OtherActor))
 	{
 		HitDamageable->Damage();
-		PushToCurrentArrowPool();
+		PushToArrowPool();
 	}
 	else
 	{
-		ArrowMovementComponent->StopMovementImmediately();
-		ArrowCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		ArrowMovementComponent->Deactivate();
+		SetActorEnableCollision(false);
 	}
 }
 
-void AArrow::PushToCurrentArrowPool()
+void AArrow::PushToArrowPool()
 {
-	if(CurrentArrowPool)
+	if(AssignedShooter)
 	{
-		bool Result;
-		CurrentArrowPool->Push(this, Result);
+		bool Success;
+		AssignedShooter->Push(this, Success);
 	}
 }

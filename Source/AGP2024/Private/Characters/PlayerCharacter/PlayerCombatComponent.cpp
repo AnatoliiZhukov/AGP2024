@@ -28,7 +28,7 @@ void UPlayerCombatComponent::OnAttackInputReceived()
 	if(!AttackIsOnCooldown() && AttackMontage && !ArmsMeshAnimInstance->Montage_IsPlaying(NULL))
 	{
 		ArmsMeshAnimInstance->Montage_Play(AttackMontage);
-
+	
 		if(const UWorld* World = GetWorld())
 		{
 			LastAttackTime = World->GetTimeSeconds();
@@ -36,7 +36,7 @@ void UPlayerCombatComponent::OnAttackInputReceived()
 	}
 }
 
-void UPlayerCombatComponent::Attack() const
+void UPlayerCombatComponent::Attack()
 {
 	if(UWorld* World = GetWorld())
 	{

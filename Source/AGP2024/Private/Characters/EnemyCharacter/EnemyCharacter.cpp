@@ -2,7 +2,7 @@
 
 #include "Characters/EnemyCharacter/EnemyCombatComponent.h"
 #include "Characters/EnemyCharacter/EnemySensingComponent.h"
-#include "CombatSystem/ArrowPoolComponent.h"
+#include "CombatSystem/ArrowShooterComponent.h"
 #include "Components/CapsuleComponent.h"
 
 AEnemyCharacter::AEnemyCharacter()
@@ -23,8 +23,7 @@ AEnemyCharacter::AEnemyCharacter()
 	EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>(TEXT("EnemyCombatComponent"));
 
 	// Create EnemyArrowPool
-	EnemyArrowPool = CreateDefaultSubobject<UArrowPoolComponent>(TEXT("EnemyArrowPool"));
-	EnemyArrowPool->InitialSpawnAmount = 3;
+	EnemyShooterComponent = CreateDefaultSubobject<UArrowShooterComponent>(TEXT("EnemyShooterComponent"));
 }
 
 void AEnemyCharacter::Tick(float DeltaSeconds)
