@@ -25,7 +25,7 @@ void UPlayerCombatComponent::BeginPlay()
 void UPlayerCombatComponent::OnAttackInputReceived()
 {
 	// Play the attack montage if it's not on cooldown and no montage is currently playing
-	if(!AttackIsOnCooldown() && AttackMontage && !ArmsMeshAnimInstance->Montage_IsPlaying(NULL))
+	if(!AttackIsOnCooldown() && AttackMontage && ArmsMeshAnimInstance && !ArmsMeshAnimInstance->Montage_IsPlaying(NULL))
 	{
 		ArmsMeshAnimInstance->Montage_Play(AttackMontage);
 	
@@ -71,10 +71,9 @@ void UPlayerCombatComponent::Attack()
 					{
 						HitDamageable->Damage();
 						Block();
-						UE_LOG(LogTemp, Warning, TEXT("Block"))
 						return;
 					}
-					if(BlockMontage && !!ArmsMeshAnimInstance->Montage_IsPlaying(BlockMontage))
+					if(BlockMontage && !ArmsMeshAnimInstance->Montage_IsPlaying(BlockMontage))
 					{
 						HitDamageable->Damage();
 					}
@@ -86,7 +85,7 @@ void UPlayerCombatComponent::Attack()
 
 void UPlayerCombatComponent::Block() const
 {
-	if(BlockMontage)
+	if(BlockMontage && ArmsMeshAnimInstance)
 	{
 		ArmsMeshAnimInstance->Montage_Play(BlockMontage);
 	}

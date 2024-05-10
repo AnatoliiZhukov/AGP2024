@@ -1,5 +1,6 @@
 #include "CombatSystem/Arrow.h"
 
+#include "Characters/EnemyCharacter/EnemyCharacter.h"
 #include "CombatSystem/ArrowShooterComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -29,7 +30,6 @@ AArrow::AArrow()
 
 void AArrow::Damage()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Arrow hit"))
 	PushToArrowPool();
 }
 

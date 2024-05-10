@@ -22,10 +22,6 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsDefeated = false;
-	
-protected:
-	virtual void PostInitializeComponents() override;
-	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	TObjectPtr<UEnemySensingComponent> EnemySensingComponent;
@@ -33,6 +29,10 @@ protected:
 	TObjectPtr<UEnemyCombatComponent> EnemyCombatComponent;
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	TObjectPtr<UArrowShooterComponent> EnemyShooterComponent;
+	
+protected:
+	virtual void PostInitializeComponents() override;
+	virtual void BeginPlay() override;
 	
 	UFUNCTION()
 	void OnSeePawn(APawn *OtherPawn);

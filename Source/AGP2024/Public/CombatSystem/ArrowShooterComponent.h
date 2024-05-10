@@ -27,6 +27,10 @@ public:
 	UFUNCTION()
 	void Pull(AActor* & Actor_Out, bool& Success_Out);
 	
+	// Pulls an arrow and changes its rotation and speed
+	UFUNCTION(BlueprintCallable)
+	void Shoot();
+	
 protected:
 	virtual void BeginPlay() override;
 	
@@ -51,8 +55,4 @@ protected:
 	// Assigns every new arrow to this shooter
 	UFUNCTION()
 	AActor* SpawnArrow();
-
-	// Pulls an arrow and changes its rotation and speed
-	UFUNCTION(BlueprintCallable)
-	void Shoot();
 };

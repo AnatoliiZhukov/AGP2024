@@ -16,11 +16,16 @@ public:
 
 	virtual void Attack() override;
 
+	UFUNCTION()
+	void AttemptAttack(APawn* PawnToAttack);
+	
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "References")
+	UPROPERTY(BlueprintReadOnly, Category = "References")
 	AEnemyCharacter* OwningEnemyCharacter = nullptr;
+	UPROPERTY(BlueprintReadOnly, Category = "References")
+	APawn* TargetPawn = nullptr;
 	UPROPERTY(BlueprintReadOnly, Category = "References")
 	UAnimInstance* EnemyCharacterMeshAnimInstance = nullptr;
 };

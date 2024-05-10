@@ -8,9 +8,15 @@
 AEnemyCharacter::AEnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	
 	// Set to react to player attacks
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Block);
+
+	// Create EnemyArrowPool
+	EnemyShooterComponent = CreateDefaultSubobject<UArrowShooterComponent>(TEXT("EnemyShooterComponent"));
+	EnemyShooterComponent->SetupAttachment(GetMesh());
 
 	// Create EnemySensingComponent
 	EnemySensingComponent = CreateDefaultSubobject<UEnemySensingComponent>(TEXT("EnemySensingComponent"));
@@ -21,9 +27,6 @@ AEnemyCharacter::AEnemyCharacter()
 
 	// Create EnemyCombatComponent
 	EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>(TEXT("EnemyCombatComponent"));
-
-	// Create EnemyArrowPool
-	EnemyShooterComponent = CreateDefaultSubobject<UArrowShooterComponent>(TEXT("EnemyShooterComponent"));
 }
 
 void AEnemyCharacter::Tick(float DeltaSeconds)
@@ -61,10 +64,7 @@ void AEnemyCharacter::Damage()
 
 	EnemyCombatComponent->Deactivate();
 
-	if (UCapsuleComponent* CapsuleComp = GetCapsuleComponent())
-	{
-		CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	}
+	SetActorEnableCollision(false);
 	
 	UE_LOG(LogTemp, Warning, TEXT("Enemy character defeated"))
 }
@@ -79,6 +79,11 @@ void AEnemyCharacter::OnSeePawn(APawn* OtherPawn)
 			TargetPawn = OtherPawn;
 			UE_LOG(LogTemp, Warning, TEXT("An enemy sees the player"))
 		}
+	}
+
+	if(EnemyCombatComponent)
+	{
+		EnemyCombatComponent->AttemptAttack(OtherPawn);
 	}
 }
 
