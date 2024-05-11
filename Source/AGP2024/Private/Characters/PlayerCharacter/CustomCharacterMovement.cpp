@@ -58,7 +58,8 @@ void UCustomCharacterMovement::HandleJumping()
 
 void UCustomCharacterMovement::HandleMeshHeight(float DeltaSeconds)
 {
-
+	if(!OwningPlayerCharacter || !OwningPlayerCharacter->ArmsMesh) return;
+	
 	// Determine the target height based on whether the character is crouching or not
 	const float TargetHeight = IsCrouching() ? CrouchHeight : StandingHeight;
 	

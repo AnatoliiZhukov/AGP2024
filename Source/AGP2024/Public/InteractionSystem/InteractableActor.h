@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -15,22 +13,11 @@ class AGP2024_API AInteractableActor : public AActor, public IInteractableInterf
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AInteractableActor();
+	virtual void Interact() override;
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "InteractableActor")
-	UStaticMeshComponent* ActorMesh;
-
 	// The box the player needs to look at in order to interact with the actor
-	UPROPERTY(EditDefaultsOnly, Category = "InteractableActor")
-	UBoxComponent* InteractionBox;
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	virtual void Interact() override;
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	TObjectPtr<UBoxComponent> InteractionBox;
 };
