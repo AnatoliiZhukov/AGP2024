@@ -24,7 +24,7 @@ void ALever::BeginPlay()
 	Super::BeginPlay();
 
 	if(TargetActor) DefaultLocation = TargetActor->GetActorLocation();
-	else {UE_LOG(LogTemp, Error, TEXT("A lever in the world has its TargetActor set to nullptr, interacting with it won't do anything"))}
+	else {UE_LOG(LogTemp, Error, TEXT("A lever in the world has its TargetActor not set, interacting with it won't do anything"))}
 }
 
 void ALever::Interact()
