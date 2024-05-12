@@ -31,20 +31,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Shoot();
 	
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	float Spread = 1;
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	float ArrowSpeed = 1000.f;
+	
 protected:
 	virtual void BeginPlay() override;
-	
+
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	TSubclassOf<AActor> ArrowClass;
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	FVector ShotDirection = FVector::ZeroVector;
 	UPROPERTY(EditAnywhere, Category = "Properties")
-	float Spread = 1;
-	UPROPERTY(EditAnywhere, Category = "Properties")
-	float ArrowSpeed = 1000.f;
-	UPROPERTY(EditAnywhere, Category = "Properties")
 	bool bCanShoot = true;
-
+	
 	UPROPERTY()
 	TArray<AActor*> InactivePool;
 	UPROPERTY()

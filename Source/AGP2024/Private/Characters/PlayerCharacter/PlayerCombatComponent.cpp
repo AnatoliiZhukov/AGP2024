@@ -73,9 +73,10 @@ void UPlayerCombatComponent::Attack()
 						Block();
 						return;
 					}
-					if(BlockMontage && !ArmsMeshAnimInstance->Montage_IsPlaying(BlockMontage))
+					if(AttackMontage && ArmsMeshAnimInstance->Montage_IsPlaying(AttackMontage))
 					{
 						HitDamageable->Damage();
+						UE_LOG(LogTemp, Warning, TEXT("Player hit a damageable"))
 					}
 				}
 			}
