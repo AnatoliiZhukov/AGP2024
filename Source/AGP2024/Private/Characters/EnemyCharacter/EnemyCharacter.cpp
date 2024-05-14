@@ -58,17 +58,16 @@ void AEnemyCharacter::BeginPlay()
 void AEnemyCharacter::Damage()
 {
 	if(bIsDefeated) return;
-
+	
 	bIsDefeated = true;
 	
 	EnemySensingComponent->bEnableSensingUpdates = false;
 	EnemySensingComponent->Deactivate();
 
+	EnemyCombatComponent->OnDefeated();
 	EnemyCombatComponent->Deactivate();
 
 	SetActorEnableCollision(false);
-	
-	UE_LOG(LogTemp, Warning, TEXT("Enemy character defeated"))
 }
 
 void AEnemyCharacter::OnSeePawn(APawn* OtherPawn)
@@ -79,7 +78,6 @@ void AEnemyCharacter::OnSeePawn(APawn* OtherPawn)
 		if(!TargetPawn)
 		{
 			TargetPawn = OtherPawn;
-			UE_LOG(LogTemp, Warning, TEXT("An enemy sees the player"))
 		}
 	}
 
@@ -104,7 +102,6 @@ void AEnemyCharacter::HandleInterest()
 	if(!IsInterested() && TargetPawn)
 	{
 		TargetPawn = nullptr;
-		UE_LOG(LogTemp, Warning, TEXT("An enemy lost interest"))
 	}
 }
 

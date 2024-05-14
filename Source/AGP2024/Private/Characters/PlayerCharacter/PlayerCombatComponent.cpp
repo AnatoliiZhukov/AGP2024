@@ -2,6 +2,8 @@
 
 #include "Characters/PlayerCharacter/PlayerCharacter.h"
 #include "CombatSystem/Arrow.h"
+#include "CombatSystem/LevelManagerWorldSub.h"
+#include "CoreSetup/CustomHUD.h"
 
 // Sets default values for this component's properties
 UPlayerCombatComponent::UPlayerCombatComponent()
@@ -25,13 +27,39 @@ void UPlayerCombatComponent::BeginPlay()
 void UPlayerCombatComponent::OnAttackInputReceived()
 {
 	// Play the attack montage if it's not on cooldown and no montage is currently playing
-	if(!AttackIsOnCooldown() && AttackMontage && ArmsMeshAnimInstance && !ArmsMeshAnimInstance->Montage_IsPlaying(NULL))
+	if(!AttackIsOnCooldown() && AttackMontage && !ArmsMeshAnimInstance->Montage_IsPlaying(NULL))
 	{
 		ArmsMeshAnimInstance->Montage_Play(AttackMontage);
 	
 		if(const UWorld* World = GetWorld())
 		{
 			LastAttackTime = World->GetTimeSeconds();
+		}
+	}
+}
+
+void UPlayerCombatComponent::OnDefeated()
+{
+	if(ArmsMeshAnimInstance->Montage_IsPlaying(DefeatMontage)) return;
+	
+	// Play DefeatMontage
+	if(DefeatMontage)
+	{
+		ArmsMeshAnimInstance->Montage_Play(DefeatMontage);
+	}
+	
+	// Slow down time
+	if(UWorld* World = GetWorld())
+	{
+		World->GetSubsystem<ULevelManagerWorldSub>(World)->StartChangingTimeDilation(0.f, 70.f);
+	}
+
+	// Show fail screen
+	if(APlayerController* PlayerController = Cast<APlayerController>(OwningPlayerCharacter->GetController()))
+	{
+		if(ACustomHUD* CustomHUD = Cast<ACustomHUD>(PlayerController->GetHUD()))
+		{
+			CustomHUD->ShowFailScreen();
 		}
 	}
 }
@@ -76,7 +104,6 @@ void UPlayerCombatComponent::Attack()
 					if(AttackMontage && ArmsMeshAnimInstance->Montage_IsPlaying(AttackMontage))
 					{
 						HitDamageable->Damage();
-						UE_LOG(LogTemp, Warning, TEXT("Player hit a damageable"))
 					}
 				}
 			}
@@ -86,7 +113,7 @@ void UPlayerCombatComponent::Attack()
 
 void UPlayerCombatComponent::Block() const
 {
-	if(BlockMontage && ArmsMeshAnimInstance)
+	if(BlockMontage)
 	{
 		ArmsMeshAnimInstance->Montage_Play(BlockMontage);
 	}

@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
+class ULevelManagerWorldSub;
 class UCustomCharacterMovement;
 class UCharacterInteractionComponent;
 class UInputAction;
@@ -23,7 +24,7 @@ public:
 	
 	FVector GetCameraTargetLocation() const { return ArmsMesh->GetSocketLocation(NAME_CameraBone); }
 	FRotator GetCameraTargetRotation() const { return ArmsMesh->GetSocketRotation(NAME_CameraBone); }
-
+	
 	virtual void Damage() override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")

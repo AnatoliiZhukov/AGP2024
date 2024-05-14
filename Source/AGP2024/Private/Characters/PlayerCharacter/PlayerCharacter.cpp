@@ -38,6 +38,11 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 void APlayerCharacter::Damage()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Player was hit"))
+	
+	if(PlayerCombatComponent)
+	{
+		PlayerCombatComponent->OnDefeated();
+	}
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

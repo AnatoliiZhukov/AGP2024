@@ -5,9 +5,21 @@ UCombatComponentBase::UCombatComponentBase()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+void UCombatComponentBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	LastAttackTime = -AttackCooldown;
+}
+
 void UCombatComponentBase::Attack()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Attacking"))
+	UE_LOG(LogTemp, Warning, TEXT("Character is attacking"))
+}
+
+void UCombatComponentBase::OnDefeated()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Character defeated"))
 }
 
 bool UCombatComponentBase::AttackIsOnCooldown() const

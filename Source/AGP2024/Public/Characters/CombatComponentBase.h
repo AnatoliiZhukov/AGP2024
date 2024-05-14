@@ -12,12 +12,15 @@ class AGP2024_API UCombatComponentBase : public UActorComponent
 
 public:	
 	UCombatComponentBase();
-
+	virtual void BeginPlay() override;
+	
 	UPROPERTY(EditDefaultsOnly)
 	bool bAttackContinuously = true;
 	
 	UFUNCTION()
 	virtual void Attack();
+	UFUNCTION()
+	virtual void OnDefeated();
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animation montages")
@@ -25,6 +28,6 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	float AttackCooldown = 1.f;
-	float LastAttackTime = -AttackCooldown;
+	float LastAttackTime = 0.f;
 	bool AttackIsOnCooldown() const;
 };

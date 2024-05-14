@@ -15,11 +15,18 @@ void UEnemyCombatComponent::Attack()
 
 	if(OwningEnemyCharacter && OwningEnemyCharacter->EnemyShooterComponent && TargetPawn)
 	{
-		FVector NewShotDirection = TargetPawn->GetActorLocation() - OwningEnemyCharacter->EnemyShooterComponent->GetComponentLocation();
+		FVector NewShotDirection = TargetPawn->GetActorLocation() + AimOffset - OwningEnemyCharacter->EnemyShooterComponent->GetComponentLocation();
 		NewShotDirection.Normalize();
 		OwningEnemyCharacter->EnemyShooterComponent->SetShotDirection(NewShotDirection);
 		OwningEnemyCharacter->EnemyShooterComponent->Shoot();
 	}
+}
+
+void UEnemyCombatComponent::OnDefeated()
+{
+	Super::OnDefeated();
+
+	EnemyCharacterMeshAnimInstance->Montage_Stop(NULL);
 }
 
 void UEnemyCombatComponent::BeginPlay()
