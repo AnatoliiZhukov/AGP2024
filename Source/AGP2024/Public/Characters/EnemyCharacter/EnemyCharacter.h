@@ -23,6 +23,9 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsDefeated = false;
 
+	UFUNCTION(BlueprintCallable)
+	UEnemyCombatComponent* GetEnemyCombatComponent() const {return EnemyCombatComponent;}
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	TObjectPtr<UEnemySensingComponent> EnemySensingComponent;
 	UPROPERTY(EditDefaultsOnly, Category = "Components")

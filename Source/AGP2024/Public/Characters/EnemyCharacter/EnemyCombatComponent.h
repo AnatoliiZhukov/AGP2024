@@ -6,12 +6,17 @@
 
 class AEnemyCharacter;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnemyDefeated);
+
 UCLASS()
 class AGP2024_API UEnemyCombatComponent : public UCombatComponentBase
 {
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnEnemyDefeated OnEnemyDefeated;
+	
 	UEnemyCombatComponent();
 
 	virtual void Attack() override;

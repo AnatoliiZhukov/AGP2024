@@ -2,6 +2,7 @@
 
 #include "Characters/EnemyCharacter/EnemyCharacter.h"
 #include "CombatSystem/ArrowShooterComponent.h"
+#include "CombatSystem/LevelManagerWorldSub.h"
 
 UEnemyCombatComponent::UEnemyCombatComponent()
 {
@@ -27,6 +28,11 @@ void UEnemyCombatComponent::OnDefeated()
 	Super::OnDefeated();
 
 	EnemyCharacterMeshAnimInstance->Montage_Stop(NULL);
+
+	if(UWorld* World = GetWorld())
+	{
+		World->GetSubsystem<ULevelManagerWorldSub>(World)->BroadcastOnLevelEnemyDefeated();
+	}
 }
 
 void UEnemyCombatComponent::BeginPlay()

@@ -1,5 +1,10 @@
 #include "CombatSystem/LevelManagerWorldSub.h"
 
+void ULevelManagerWorldSub::BroadcastOnLevelEnemyDefeated() const
+{
+	OnLevelEnemyDefeated.Broadcast();
+}
+
 void ULevelManagerWorldSub::StartChangingTimeDilation(float TargetDilation, float SlowDownRate)
 {
 	TargetTimeDilation = TargetDilation;
