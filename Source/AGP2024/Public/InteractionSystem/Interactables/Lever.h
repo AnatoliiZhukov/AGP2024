@@ -4,9 +4,9 @@
 #include "InteractionSystem/InteractableActor.h"
 #include "Lever.generated.h"
 
-/**
- * 
- */
+class UMoveable;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLeverStateChanged, bool, bActivated);
+
 UCLASS()
 class AGP2024_API ALever : public AInteractableActor
 {
@@ -14,9 +14,10 @@ class AGP2024_API ALever : public AInteractableActor
 	
 public:
 	ALever();
-	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
-
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnLeverStateChanged OnLeverStateChanged;
+	
 	virtual void Interact() override;
 	
 protected:
@@ -25,14 +26,9 @@ protected:
 	
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Properties")
 	AActor* TargetActor = nullptr;
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Properties")
-	FVector WorldDisplacement = FVector::ZeroVector;
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Properties")
-	float MoveSpeed = 50.f;
+	UPROPERTY()
+	UMoveable* TargetMoveable = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsActivated = false;
-
-	FVector DefaultLocation = FVector::ZeroVector;
-	void HandleActorMovement(float DT);
 };
