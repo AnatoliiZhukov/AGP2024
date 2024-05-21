@@ -117,9 +117,11 @@ void UArrowShooterComponent::Shoot()
 	
 	if(AArrow* ShotArrow = Cast<AArrow>(PulledActor))
 	{
-		ShotArrow->SetActorLocation(GetComponentLocation());
+		ShotArrow->SetActorLocation(ShotArrow->GetAssignedShooter()->GetComponentLocation());
 		
 		FVector NewVelocity = ShotDirection * ArrowSpeed;
+		
+		// Calculate spread
 		if(Spread != 0)
 		{
 			for (int i = 0; i < 3; ++i) NewVelocity[i] += FMath::RandRange(Spread, -Spread);

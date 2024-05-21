@@ -72,18 +72,20 @@ void AEnemyCharacter::Damage()
 
 void AEnemyCharacter::OnSeePawn(APawn* OtherPawn)
 {
+	if(!LookAtPawn) LookAtPawn = OtherPawn;
+	
 	if(const UWorld* World = GetWorld())
 	{
 		LastSeenTime = World->GetTimeSeconds();
-		if(!TargetPawn)
+		if(!EnemyCombatComponent->GetTargetPawn())
 		{
-			TargetPawn = OtherPawn;
+			EnemyCombatComponent->SetTargetPawn(OtherPawn);
 		}
 	}
 
 	if(EnemyCombatComponent)
 	{
-		EnemyCombatComponent->AttemptAttack(OtherPawn);
+		EnemyCombatComponent->AttemptAttack();
 	}
 }
 
@@ -99,18 +101,18 @@ bool AEnemyCharacter::IsInterested() const
 
 void AEnemyCharacter::HandleInterest()
 {
-	if(!IsInterested() && TargetPawn)
+	if(!IsInterested() && LookAtPawn)
 	{
-		TargetPawn = nullptr;
+		LookAtPawn = nullptr;
 	}
 }
 
 void AEnemyCharacter::HandleCharacterRotation(const float DT)
 {
 	FRotator TargetRotation;
-	if(TargetPawn)
+	if(LookAtPawn)
 	{
-		FVector DirectionToTarget = TargetPawn->GetActorLocation() - GetActorLocation();
+		FVector DirectionToTarget = LookAtPawn->GetActorLocation() - GetActorLocation();
 		DirectionToTarget.Z = 0;
 		TargetRotation = FRotationMatrix::MakeFromX(DirectionToTarget).Rotator();
 	}

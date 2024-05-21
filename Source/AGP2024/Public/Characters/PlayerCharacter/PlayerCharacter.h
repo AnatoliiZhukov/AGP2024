@@ -38,6 +38,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UPlayerCombatComponent> PlayerCombatComponent;
 
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
+	bool bIsImmuneToDamage = false;
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerInput", meta=(AllowPrivateAccess=true))
 	UInputMappingContext* PlayerCharacterMappingContext;

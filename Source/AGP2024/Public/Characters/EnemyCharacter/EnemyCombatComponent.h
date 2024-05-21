@@ -23,9 +23,12 @@ public:
 	virtual void OnDefeated() override;
 
 	UFUNCTION()
-	void AttemptAttack(APawn* PawnToAttack);
+	void AttemptAttack();
 	
-	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	APawn* GetTargetPawn() const {return TargetPawn;}
+	UFUNCTION(BlueprintCallable)
+	void SetTargetPawn(APawn* NewTargetPawn) {TargetPawn = NewTargetPawn;}
 protected:
 	virtual void BeginPlay() override;
 

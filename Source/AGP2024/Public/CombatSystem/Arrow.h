@@ -35,6 +35,9 @@ public:
 
 	void AssignToShooter(UArrowShooterComponent* NewShooter) {AssignedShooter = NewShooter;}
 	
+	UFUNCTION()
+	UArrowShooterComponent* GetAssignedShooter() const {return AssignedShooter;}
+	
 protected:
 	virtual void PostInitializeComponents() override;
 

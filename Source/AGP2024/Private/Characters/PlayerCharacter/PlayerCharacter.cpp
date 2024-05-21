@@ -39,7 +39,7 @@ void APlayerCharacter::Damage()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Player was hit"))
 	
-	if(PlayerCombatComponent)
+	if(PlayerCombatComponent && !bIsImmuneToDamage)
 	{
 		PlayerCombatComponent->OnDefeated();
 	}

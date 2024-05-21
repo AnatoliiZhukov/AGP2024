@@ -48,11 +48,10 @@ void UEnemyCombatComponent::BeginPlay()
 	}
 }
 
-void UEnemyCombatComponent::AttemptAttack(APawn* PawnToAttack)
+void UEnemyCombatComponent::AttemptAttack()
 {
 	if(AttackIsOnCooldown()) return;
-
-	if(TargetPawn != PawnToAttack) TargetPawn = PawnToAttack;
+	
 	if(EnemyCharacterMeshAnimInstance && AttackMontage)
 	{
 		if(!EnemyCharacterMeshAnimInstance->Montage_IsPlaying(NULL))

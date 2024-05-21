@@ -16,8 +16,6 @@ public:
 	UArrowShooterComponent();
 
 	UFUNCTION(BlueprintCallable)
-	void ToggleCanShoot() {bCanShoot = !bCanShoot;}
-	UFUNCTION(BlueprintCallable)
 	void SetShotDirection(FVector NewDirection) {ShotDirection = NewDirection;}
 	
 	UPROPERTY(EditDefaultsOnly, Category = "ArrowPool")
@@ -43,8 +41,6 @@ protected:
 	TSubclassOf<AActor> ArrowClass;
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	FVector ShotDirection = FVector::ZeroVector;
-	UPROPERTY(EditAnywhere, Category = "Properties")
-	bool bCanShoot = true;
 	
 	UPROPERTY()
 	TArray<AActor*> InactivePool;

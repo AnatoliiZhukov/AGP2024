@@ -49,7 +49,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float RotationSpeed = 150.f;
 	UPROPERTY()
-	APawn* TargetPawn;
+	APawn* LookAtPawn;
 	FRotator DefaultRotation;
 	void HandleCharacterRotation(float DT);
 };
