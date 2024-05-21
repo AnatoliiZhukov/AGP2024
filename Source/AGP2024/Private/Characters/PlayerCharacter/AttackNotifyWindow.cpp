@@ -7,13 +7,11 @@ void UAttackNotifyWindow::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSeq
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 	
-	if(!RelatedCombatComponent)
+	if(UCombatComponentBase* CombatComponent = MeshComp->GetOwner()->GetComponentByClass<UCombatComponentBase>())
 	{
-		if(UCombatComponentBase* CombatComponent = MeshComp->GetOwner()->GetComponentByClass<UCombatComponentBase>())
-		{
-			RelatedCombatComponent = CombatComponent;
-		}
+		RelatedCombatComponent = CombatComponent;
 	}
+	
 	if(RelatedCombatComponent && !RelatedCombatComponent->bAttackContinuously)
 	{
 		RelatedCombatComponent->Attack();

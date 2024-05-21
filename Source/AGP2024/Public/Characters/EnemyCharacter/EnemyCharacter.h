@@ -23,8 +23,14 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsDefeated = false;
 
-	UFUNCTION(BlueprintCallable)
-	UEnemyCombatComponent* GetEnemyCombatComponent() const {return EnemyCombatComponent;}
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Getters")
+	UEnemyCombatComponent* GetEnemyCombat() const {return EnemyCombatComponent;}
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Getters")
+	UArrowShooterComponent* GetEnemyShooter() const {return EnemyShooterComponent;}
+	
+protected:
+	virtual void PostInitializeComponents() override;
+	virtual void BeginPlay() override;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	TObjectPtr<UEnemySensingComponent> EnemySensingComponent;
@@ -32,10 +38,6 @@ public:
 	TObjectPtr<UEnemyCombatComponent> EnemyCombatComponent;
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	TObjectPtr<UArrowShooterComponent> EnemyShooterComponent;
-	
-protected:
-	virtual void PostInitializeComponents() override;
-	virtual void BeginPlay() override;
 	
 	UFUNCTION()
 	void OnSeePawn(APawn *OtherPawn);

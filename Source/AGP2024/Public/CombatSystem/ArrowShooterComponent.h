@@ -42,9 +42,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	FVector ShotDirection = FVector::ZeroVector;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TArray<AActor*> InactivePool;
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TArray<AActor*> ActivePool;
 	
 	// Spawns a new arrow actor from specified class

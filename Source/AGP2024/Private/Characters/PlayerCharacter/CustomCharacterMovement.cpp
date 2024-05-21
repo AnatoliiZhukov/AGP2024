@@ -33,7 +33,7 @@ void UCustomCharacterMovement::OnMovementUpdated(float DeltaSeconds, const FVect
 void UCustomCharacterMovement::ApplyVelocityBraking(float DeltaTime, float Friction, float BrakingDeceleration)
 {
 	// Only apply friction if jump is not queued
-	if(bJumpQueued) {return;}
+	if(bJumpQueued && !IsCrouching()) {return;}
 
 	Super::ApplyVelocityBraking(DeltaTime, Friction, BrakingDeceleration);
 }

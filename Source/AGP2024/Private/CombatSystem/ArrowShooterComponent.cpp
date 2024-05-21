@@ -117,7 +117,7 @@ void UArrowShooterComponent::Shoot()
 	
 	if(AArrow* ShotArrow = Cast<AArrow>(PulledActor))
 	{
-		ShotArrow->SetActorLocation(ShotArrow->GetAssignedShooter()->GetComponentLocation());
+		ShotArrow->SetActorLocation(GetComponentLocation());
 		
 		FVector NewVelocity = ShotDirection * ArrowSpeed;
 		
