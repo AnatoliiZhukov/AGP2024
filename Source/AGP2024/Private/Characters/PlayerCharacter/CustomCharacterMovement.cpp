@@ -26,8 +26,9 @@ void UCustomCharacterMovement::OnMovementUpdated(float DeltaSeconds, const FVect
 	
 	HandleMeshRotation();
 	HandleJumping();
-	HandleMeshHeight(DeltaSeconds);
 	HandleRunning();
+	
+	HandleMeshHeight(DeltaSeconds);
 }
 
 void UCustomCharacterMovement::ApplyVelocityBraking(float DeltaTime, float Friction, float BrakingDeceleration)
@@ -40,8 +41,7 @@ void UCustomCharacterMovement::ApplyVelocityBraking(float DeltaTime, float Frict
 
 void UCustomCharacterMovement::HandleMeshRotation()
 {
-	const FRotator PawnViewRotation = OwningPlayerCharacter->GetViewRotation();
-	if (!PawnViewRotation.Equals(OwningPlayerCharacter->ArmsMesh->GetComponentRotation()))
+	if (FRotator PawnViewRotation = OwningPlayerCharacter->GetViewRotation(); !PawnViewRotation.Equals(OwningPlayerCharacter->ArmsMesh->GetComponentRotation()))
 	{
 		OwningPlayerCharacter->ArmsMesh->SetWorldRotation(PawnViewRotation);
 	}
@@ -54,6 +54,11 @@ void UCustomCharacterMovement::HandleJumping()
 		OwningPlayerCharacter->Jump();
 		bJumpQueued = false;
 	}
+}
+
+void UCustomCharacterMovement::HandleRunning()
+{
+	bWantsToRun && bIsMovingForward ? MaxWalkSpeed = RunSpeed : MaxWalkSpeed = WalkSpeed;
 }
 
 void UCustomCharacterMovement::HandleMeshHeight(float DeltaSeconds)
@@ -78,11 +83,6 @@ void UCustomCharacterMovement::HandleMeshHeight(float DeltaSeconds)
 		NewLocation.Z = TargetHeight;
 	}
 	OwningPlayerCharacter->ArmsMesh->SetRelativeLocation(NewLocation);
-}
-
-void UCustomCharacterMovement::HandleRunning()
-{
-	bWantsToRun && bIsMovingForward ? MaxWalkSpeed = RunSpeed : MaxWalkSpeed = WalkSpeed;
 }
 
 #pragma region PlayerInput

@@ -21,6 +21,9 @@ public:
 	UFUNCTION()
 	void StartChangingTimeDilation(float TargetDilation, float SlowDownRate);
 
+	UFUNCTION(BlueprintCallable)
+	void TryToDamageActor(AActor* Actor);
+
 protected:
 	FTimerHandle TimeDilationHandle;
 	float TargetTimeDilation;

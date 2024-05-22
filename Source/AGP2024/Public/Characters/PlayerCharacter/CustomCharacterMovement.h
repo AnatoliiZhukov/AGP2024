@@ -32,7 +32,7 @@ public:
 	virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Look")
-	float LookSensitivity = 0.5f;
+	float LookSensitivity = 0.2f;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Properties | Crouch")
 	bool bToggleCrouch = false;
@@ -72,6 +72,7 @@ private:
 	
 	void HandleMeshRotation();
 	void HandleJumping();
-	void HandleMeshHeight(float DeltaSeconds);
 	void HandleRunning();
+	
+	void HandleMeshHeight(float DeltaSeconds);
 };

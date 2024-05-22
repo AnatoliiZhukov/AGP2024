@@ -47,10 +47,7 @@ void ACustomCameraManager::UpdateViewTarget(FTViewTarget& OutVT, float DeltaTime
 
 bool ACustomCameraManager::CustomCameraBehavior(float DeltaTime, FVector& Location, FRotator& Rotation, float& FOV)
 {
-    if (!ControlledCharacter)
-    {
-        return false;
-    }
+    if (!ControlledCharacter) return false;
 
     // Set new rotation
     if(bCameraUsesControlRotation)

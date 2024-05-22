@@ -1,5 +1,7 @@
 #include "CombatSystem/LevelManagerWorldSub.h"
 
+#include "CombatSystem/DamageableInterface.h"
+
 void ULevelManagerWorldSub::BroadcastOnLevelEnemyDefeated() const
 {
 	OnLevelEnemyDefeated.Broadcast();
@@ -11,6 +13,16 @@ void ULevelManagerWorldSub::StartChangingTimeDilation(float TargetDilation, floa
 	TimeDilationChangeRate = SlowDownRate;
 	
 	GetWorld()->GetTimerManager().SetTimer(TimeDilationHandle, this, &ULevelManagerWorldSub::ChangeTimeDilation, 0.1f, true, 0.0f);
+}
+
+void ULevelManagerWorldSub::TryToDamageActor(AActor* Actor)
+{
+	if(!Actor) return;
+	
+	if(IDamageableInterface* DamageableActor = Cast<IDamageableInterface>(Actor))
+	{
+		DamageableActor->Damage();
+	}
 }
 
 void ULevelManagerWorldSub::ChangeTimeDilation()
