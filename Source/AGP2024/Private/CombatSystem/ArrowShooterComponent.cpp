@@ -119,13 +119,19 @@ void UArrowShooterComponent::Shoot()
 	{
 		ShotArrow->SetActorLocation(GetComponentLocation());
 		
-		FVector NewVelocity = ShotDirection * ArrowSpeed;
+		FVector NewVelocity = ShotDirection;
 		
 		// Calculate spread
-		if(Spread != 0)
+		if(VerticalSpread != 0)
 		{
-			for (int i = 0; i < 3; ++i) NewVelocity[i] += FMath::RandRange(Spread, -Spread);
+			NewVelocity.Z += FMath::RandRange(VerticalSpread, -VerticalSpread);
 		}
-		ShotArrow->ArrowMovementComponent->Velocity = (NewVelocity);
+		if(HorizontalSpread != 0)
+		{
+			NewVelocity.X += FMath::RandRange(HorizontalSpread, -HorizontalSpread);
+			NewVelocity.Y += FMath::RandRange(HorizontalSpread, -HorizontalSpread);
+			NewVelocity.Normalize();
+		}
+		ShotArrow->ArrowMovementComponent->Velocity = (NewVelocity * ArrowSpeed);
 	}
 }

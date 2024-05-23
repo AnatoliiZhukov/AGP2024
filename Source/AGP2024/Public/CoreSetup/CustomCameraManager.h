@@ -49,8 +49,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	FRotator TargetCameraRotation;
-
-private:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = true))
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bCameraUsesControlRotation = false;
 };

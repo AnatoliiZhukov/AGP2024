@@ -8,6 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "Arrow.generated.h"
 
+class UPointLightComponent;
 class UArrowShooterComponent;
 class UProjectileMovementComponent;
 class UArrowMovementComponent;
@@ -30,6 +31,8 @@ public:
 	TObjectPtr<USphereComponent> ArrowCollision;
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	TObjectPtr<UStaticMeshComponent> ArrowMesh;
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	TObjectPtr<UPointLightComponent> ArrowLight;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UProjectileMovementComponent> ArrowMovementComponent;
 

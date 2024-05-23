@@ -18,8 +18,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetShotDirection(FVector NewDirection) {ShotDirection = NewDirection;}
 	
-	UPROPERTY(EditDefaultsOnly, Category = "ArrowPool")
-	int32 InitialSpawnAmount = 10;
+	UPROPERTY(EditAnywhere, Category = "ArrowPool")
+	int32 InitialSpawnAmount = 20;
 	UFUNCTION()
 	void Push(AActor* Actor, bool& Success_Out);
 	UFUNCTION()
@@ -30,7 +30,9 @@ public:
 	void Shoot();
 	
 	UPROPERTY(EditAnywhere, Category = "Properties")
-	float Spread = 1;
+	float VerticalSpread = 0;
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	float HorizontalSpread = 0;
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	float ArrowSpeed = 1000.f;
 	

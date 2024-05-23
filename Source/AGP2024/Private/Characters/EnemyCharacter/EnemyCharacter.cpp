@@ -17,7 +17,6 @@ AEnemyCharacter::AEnemyCharacter()
 	// Create EnemyArrowPool
 	EnemyShooterComponent = CreateDefaultSubobject<UArrowShooterComponent>(TEXT("EnemyShooterComponent"));
 	EnemyShooterComponent->ArrowSpeed = 2000.f;
-	EnemyShooterComponent->Spread = 0.f;
 	EnemyShooterComponent->SetupAttachment(GetMesh());
 
 	// Create EnemySensingComponent

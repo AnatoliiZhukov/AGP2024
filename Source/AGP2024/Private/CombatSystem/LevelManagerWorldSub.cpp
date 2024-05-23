@@ -2,9 +2,10 @@
 
 #include "CombatSystem/DamageableInterface.h"
 
-void ULevelManagerWorldSub::BroadcastOnLevelEnemyDefeated() const
+void ULevelManagerWorldSub::BroadcastOnAnyEnemyDefeated()
 {
-	OnLevelEnemyDefeated.Broadcast();
+	EnemiesDefeated++;
+	OnAnyEnemyDefeated.Broadcast();
 }
 
 void ULevelManagerWorldSub::StartChangingTimeDilation(float TargetDilation, float SlowDownRate)

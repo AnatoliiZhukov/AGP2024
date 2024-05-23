@@ -32,9 +32,11 @@ void UEnemyCombatComponent::OnDefeated()
 
 	EnemyCharacterMeshAnimInstance->Montage_Stop(NULL);
 
+	OnEnemyDefeated.Broadcast();
+	
 	if(UWorld* World = GetWorld())
 	{
-		World->GetSubsystem<ULevelManagerWorldSub>(World)->BroadcastOnLevelEnemyDefeated();
+		World->GetSubsystem<ULevelManagerWorldSub>(World)->BroadcastOnAnyEnemyDefeated();
 	}
 }
 
