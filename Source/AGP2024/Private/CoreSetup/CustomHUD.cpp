@@ -4,8 +4,22 @@
 #include "CoreSetup/CustomHUD.h"
 
 #include "Blueprint/UserWidget.h"
+#include "Widgets/HUDWidget.h"
 
 #pragma region CreatingWidgets
+
+void ACustomHUD::CreateAndShowHUDWidget()
+{
+	if (HUDWidgetClass)
+	{
+		HUDWidget = CreateWidget<UHUDWidget>(GetWorld(), HUDWidgetClass);
+		if (HUDWidget)
+		{
+			HUDWidget->AddToViewport();
+			HUDWidget->ShowInteractCrosshair(false);
+		}
+	}
+}
 
 void ACustomHUD::CreateAndCollapseFailScreen()
 {
@@ -71,5 +85,6 @@ void ACustomHUD::BeginPlay()
 
 	SetInputModeGameOnly();
 
+	CreateAndShowHUDWidget();
 	CreateAndCollapseFailScreen();
 }

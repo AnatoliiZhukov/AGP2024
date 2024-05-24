@@ -19,6 +19,7 @@ void UEnemyCombatComponent::Attack()
 		if(UArrowShooterComponent* EnemyShooter = OwningEnemyCharacter->GetEnemyShooter())
 		{
 			FVector NewShotDirection = TargetPawn->GetActorLocation() + AimOffset - EnemyShooter->GetComponentLocation();
+			
 			NewShotDirection.Normalize();
 			EnemyShooter->SetShotDirection(NewShotDirection);
 			OwningEnemyCharacter->GetEnemyShooter()->Shoot();

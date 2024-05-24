@@ -4,6 +4,8 @@
 #include "Components/ActorComponent.h"
 #include "CharacterInteractionComponent.generated.h"
 
+class IInteractableInterface;
+class ACustomHUD;
 class APlayerCharacter;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -26,11 +28,12 @@ protected:
 
 private:
 	UPROPERTY()
-	APlayerCharacter* OwningPlayerCharacter = nullptr;
+	TObjectPtr<APlayerCharacter> OwningPlayerCharacter = nullptr;
+	UPROPERTY()
+	TObjectPtr<ACustomHUD> CustomHUD = nullptr;
 	
 	ECollisionChannel CollisionTraceChannel = ECC_GameTraceChannel1;
 	
-	UPROPERTY()
-	AActor* TargetActor = nullptr;
-	AActor* GetInteractableInRange() const;
+	IInteractableInterface* TargetInteractable = nullptr;
+	IInteractableInterface* GetInteractableInRange() const;
 };

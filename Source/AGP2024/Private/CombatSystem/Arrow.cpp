@@ -41,6 +41,8 @@ void AArrow::Damage()
 
 void AArrow::OnPushed()
 {
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	
 	ArrowMovementComponent->Deactivate();
 	GetWorldTimerManager().ClearTimer(ArrowLifespanTimerHandle);
 }
@@ -76,6 +78,9 @@ void AArrow::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimi
 	}
 	else
 	{
+		FAttachmentTransformRules AttachRules(EAttachmentRule::KeepWorld, true);
+		AttachToComponent(OtherComp, AttachRules);
+		
 		ArrowMovementComponent->Deactivate();
 		SetActorEnableCollision(false);
 	}

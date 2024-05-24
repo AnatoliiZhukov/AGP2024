@@ -1,6 +1,10 @@
 #include "Characters/PlayerCharacter/CharacterInteractionComponent.h"
+
+#include "Animation/AnimNode_Inertialization.h"
 #include "Characters/PlayerCharacter/PlayerCharacter.h"
+#include "CoreSetup/CustomHUD.h"
 #include "InteractionSystem/InteractableInterface.h"
+#include "Widgets/HUDWidget.h"
 
 UCharacterInteractionComponent::UCharacterInteractionComponent()
 {
@@ -13,16 +17,25 @@ void UCharacterInteractionComponent::BeginPlay()
 	Super::BeginPlay();
 	
 	OwningPlayerCharacter = Cast<APlayerCharacter>(GetOwner());
+	if(APlayerController* PC = Cast<APlayerController>(OwningPlayerCharacter->GetController()))
+	{
+		if(ACustomHUD* CHUD = Cast<ACustomHUD>(PC->GetHUD()))
+		{
+			CustomHUD = CHUD;
+		}
+	}
 }
 
 void UCharacterInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
-	TargetActor = GetInteractableInRange();
+	TargetInteractable = GetInteractableInRange();
+	if(TargetInteractable) CustomHUD->GetHUDWidget()->ShowInteractCrosshair(true);
+	else CustomHUD->GetHUDWidget()->ShowInteractCrosshair(false);
 }
 
-AActor* UCharacterInteractionComponent::GetInteractableInRange() const
+IInteractableInterface* UCharacterInteractionComponent::GetInteractableInRange() const
 {
 	if(!GetWorld() || !OwningPlayerCharacter) return nullptr;
 
@@ -38,7 +51,7 @@ AActor* UCharacterInteractionComponent::GetInteractableInRange() const
 		
 		if(FHitResult Hit; GetWorld()->LineTraceSingleByChannel(Hit, Start, End, CollisionTraceChannel, CollisionParams))
 		{
-			return Hit.GetActor();
+			if(IInteractableInterface* Interactable = Cast<IInteractableInterface>(Hit.GetActor())) return Interactable;
 		}
 	}
 	return nullptr;
@@ -46,11 +59,8 @@ AActor* UCharacterInteractionComponent::GetInteractableInRange() const
 
 void UCharacterInteractionComponent::OnInteractInputReceived()
 {
-	if(TargetActor)
+	if(TargetInteractable)
 	{
-		if(IInteractableInterface* TargetInteractable = Cast<IInteractableInterface>(TargetActor))
-		{
-			TargetInteractable->Interact();
-		}
+		TargetInteractable->Interact();
 	}
 }

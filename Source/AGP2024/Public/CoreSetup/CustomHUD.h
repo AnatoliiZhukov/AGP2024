@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "CustomHUD.generated.h"
 
+class UHUDWidget;
 /**
  * 
  */
@@ -15,6 +16,9 @@ class AGP2024_API ACustomHUD : public AHUD
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UHUDWidget* GetHUDWidget() const {return HUDWidget;}
+	
 	UFUNCTION()
 	void SetInputModeGameOnly() const;
 	UFUNCTION()
@@ -30,10 +34,16 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+	TSubclassOf<UUserWidget> HUDWidgetClass;
+	UPROPERTY()
+	TObjectPtr<UHUDWidget> HUDWidget;
+	void CreateAndShowHUDWidget();
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> FailScreenClass;
 	UPROPERTY()
 	TObjectPtr<UUserWidget> FailScreen;
 	void CreateAndCollapseFailScreen();
+
 };
