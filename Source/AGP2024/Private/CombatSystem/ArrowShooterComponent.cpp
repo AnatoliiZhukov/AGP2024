@@ -6,6 +6,7 @@
 #include "CombatSystem/Arrow.h"
 #include "CombatSystem/ArrowPoolInterface.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "UObject/FastReferenceCollector.h"
 
 UArrowShooterComponent::UArrowShooterComponent()
 {
@@ -118,20 +119,47 @@ void UArrowShooterComponent::Shoot()
 	if(AArrow* ShotArrow = Cast<AArrow>(PulledActor))
 	{
 		ShotArrow->SetActorLocation(GetComponentLocation());
-		
-		FVector NewVelocity = ShotDirection;
-		
-		// Calculate spread
-		if(VerticalSpread != 0)
-		{
-			NewVelocity.Z += FMath::RandRange(VerticalSpread, -VerticalSpread);
-		}
-		if(HorizontalSpread != 0)
-		{
-			NewVelocity.X += FMath::RandRange(HorizontalSpread, -HorizontalSpread);
-			NewVelocity.Y += FMath::RandRange(HorizontalSpread, -HorizontalSpread);
-			NewVelocity.Normalize();
-		}
-		ShotArrow->ArrowMovementComponent->Velocity = (NewVelocity * ArrowSpeed);
+		ShotArrow->ArrowMovementComponent->Velocity = (CalculateShotDirection() * ArrowSpeed);
 	}
+}
+
+FVector UArrowShooterComponent::CalculateShotDirection()
+{
+	FVector CalculatedShotDirection;
+	
+	if(TargetPawn)
+	{
+		FVector PawnLocation = TargetPawn->GetActorLocation();
+		
+		CalculatedShotDirection = PawnLocation + AimOffset - GetComponentLocation();
+		
+		if(UPrimitiveComponent* MovementBase = TargetPawn->GetMovementBase())
+		{
+			// Perform a prediction is the player is standing on a moving platform
+			// (not fully accurate but close enough)
+			if(AActor* Platform = MovementBase->GetOwner())
+			{
+				const FVector PlatformVelocity = Platform->GetVelocity();
+				
+				if(PlatformVelocity != FVector::ZeroVector)
+				{
+					float DistanceToPawn = CalculatedShotDirection.Size();
+					float TimeOfFlight = DistanceToPawn / ArrowSpeed;
+		
+					CalculatedShotDirection += PlatformVelocity * TimeOfFlight;
+				}
+			}
+		}
+	}
+	else CalculatedShotDirection = ShotDirection;
+
+	if(VerticalSpread != 0) CalculatedShotDirection.Z += FMath::RandRange(VerticalSpread, -VerticalSpread);
+	if(HorizontalSpread != 0)
+	{
+		CalculatedShotDirection.X += FMath::RandRange(HorizontalSpread, -HorizontalSpread);
+		CalculatedShotDirection.Y += FMath::RandRange(HorizontalSpread, -HorizontalSpread);
+	}
+	
+	CalculatedShotDirection.Normalize();
+	return CalculatedShotDirection;
 }

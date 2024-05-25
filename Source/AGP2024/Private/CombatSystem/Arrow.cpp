@@ -30,8 +30,8 @@ AArrow::AArrow()
 	ArrowMovementComponent->ProjectileGravityScale = 0.f;
 	ArrowMovementComponent->bRotationFollowsVelocity = true;
 	ArrowMovementComponent->bInitialVelocityInLocalSpace = true;
-	ArrowMovementComponent->InitialSpeed = 100.f;
-	ArrowMovementComponent->MaxSpeed = 100.f;
+	ArrowMovementComponent->InitialSpeed = 0.f;
+	ArrowMovementComponent->MaxSpeed = 8000.f;
 }
 
 void AArrow::Damage()

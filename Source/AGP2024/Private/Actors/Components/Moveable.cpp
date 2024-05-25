@@ -47,6 +47,13 @@ void UMoveable::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 		FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, MoveSpeed);
 		Owner->SetActorLocation(NewLocation);
 		
-		if(NewLocation == TargetLocation) bIsMoving = false;
+		FVector NewVelocity = (NewLocation - CurrentLocation) / DeltaTime;
+		Owner->GetRootComponent()->ComponentVelocity = NewVelocity;
+		
+		if(NewLocation == TargetLocation)
+		{
+			bIsMoving = false;
+			Owner->GetRootComponent()->ComponentVelocity = FVector::ZeroVector;
+		}
 	}
 }

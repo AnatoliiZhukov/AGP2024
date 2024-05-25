@@ -16,7 +16,7 @@ AEnemyCharacter::AEnemyCharacter()
 
 	// Create EnemyArrowPool
 	EnemyShooterComponent = CreateDefaultSubobject<UArrowShooterComponent>(TEXT("EnemyShooterComponent"));
-	EnemyShooterComponent->ArrowSpeed = 2000.f;
+	EnemyShooterComponent->ArrowSpeed = 4000.f;
 	EnemyShooterComponent->SetupAttachment(GetMesh());
 
 	// Create EnemySensingComponent
@@ -76,9 +76,9 @@ void AEnemyCharacter::OnSeePawn(APawn* OtherPawn)
 	if(const UWorld* World = GetWorld())
 	{
 		LastSeenTime = World->GetTimeSeconds();
-		if(!EnemyCombatComponent->GetTargetPawn())
+		if(!EnemyShooterComponent->TargetPawn)
 		{
-			EnemyCombatComponent->SetTargetPawn(OtherPawn);
+			EnemyShooterComponent->TargetPawn = OtherPawn;
 		}
 	}
 

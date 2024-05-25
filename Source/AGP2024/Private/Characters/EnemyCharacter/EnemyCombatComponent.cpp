@@ -14,15 +14,11 @@ void UEnemyCombatComponent::Attack()
 {
 	Super::Attack();
 
-	if(OwningEnemyCharacter && OwningEnemyCharacter->GetEnemyShooter() && TargetPawn)
+	if(OwningEnemyCharacter && OwningEnemyCharacter->GetEnemyShooter())
 	{
 		if(UArrowShooterComponent* EnemyShooter = OwningEnemyCharacter->GetEnemyShooter())
 		{
-			FVector NewShotDirection = TargetPawn->GetActorLocation() + AimOffset - EnemyShooter->GetComponentLocation();
-			
-			NewShotDirection.Normalize();
-			EnemyShooter->SetShotDirection(NewShotDirection);
-			OwningEnemyCharacter->GetEnemyShooter()->Shoot();
+			EnemyShooter->Shoot();
 		}
 	}
 }

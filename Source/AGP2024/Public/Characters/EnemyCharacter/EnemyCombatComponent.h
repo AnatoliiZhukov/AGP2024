@@ -25,10 +25,6 @@ public:
 	UFUNCTION()
 	void AttemptAttack();
 	
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	APawn* GetTargetPawn() const {return TargetPawn;}
-	UFUNCTION(BlueprintCallable)
-	void SetTargetPawn(APawn* NewTargetPawn) {TargetPawn = NewTargetPawn;}
 protected:
 	virtual void BeginPlay() override;
 
@@ -37,8 +33,6 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, Category = "References")
 	AEnemyCharacter* OwningEnemyCharacter = nullptr;
-	UPROPERTY(BlueprintReadOnly, Category = "References")
-	APawn* TargetPawn = nullptr;
 	UPROPERTY(BlueprintReadOnly, Category = "References")
 	UAnimInstance* EnemyCharacterMeshAnimInstance = nullptr;
 };

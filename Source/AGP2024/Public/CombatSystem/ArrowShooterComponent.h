@@ -14,9 +14,6 @@ class AGP2024_API UArrowShooterComponent : public USceneComponent
 
 public:	
 	UArrowShooterComponent();
-
-	UFUNCTION(BlueprintCallable)
-	void SetShotDirection(FVector NewDirection) {ShotDirection = NewDirection;}
 	
 	UPROPERTY(EditAnywhere, Category = "ArrowPool")
 	int32 InitialSpawnAmount = 20;
@@ -24,8 +21,11 @@ public:
 	void Push(AActor* Actor, bool& Success_Out);
 	UFUNCTION()
 	void Pull(AActor* & Actor_Out, bool& Success_Out);
-	
-	// Pulls an arrow and changes its rotation and speed
+
+	UFUNCTION(BlueprintCallable)
+	FVector CalculateShotDirection();
+	UFUNCTION(BlueprintCallable)
+	void SetShotDirection(FVector NewDirection) {ShotDirection = NewDirection;}
 	UFUNCTION(BlueprintCallable)
 	void Shoot();
 	
@@ -35,12 +35,17 @@ public:
 	float HorizontalSpread = 0;
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	float ArrowSpeed = 1000.f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "References")
+	APawn* TargetPawn = nullptr;
 	
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	TSubclassOf<AActor> ArrowClass;
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	FVector AimOffset = FVector::ZeroVector;
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	FVector ShotDirection = FVector::ZeroVector;
 	
