@@ -50,6 +50,8 @@ void AArrow::OnPushed()
 void AArrow::OnPulled()
 {
 	ArrowMovementComponent->Activate();
+	ArrowLight->SetHiddenInGame(false);
+	
 	GetWorldTimerManager().SetTimer(ArrowLifespanTimerHandle, this, &AArrow::OnArrowLifespanExpire, ArrowLifespan, false);
 }
 
@@ -83,6 +85,8 @@ void AArrow::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimi
 		
 		ArrowMovementComponent->Deactivate();
 		SetActorEnableCollision(false);
+		
+		ArrowLight->SetHiddenInGame(true);
 	}
 }
 
