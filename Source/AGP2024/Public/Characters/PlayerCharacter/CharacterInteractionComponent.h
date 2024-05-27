@@ -19,7 +19,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "InteractionProperties")
-	float InteractRange = 400.0f;
+	float InteractRange = 200.0f;
 
 	void OnInteractInputReceived();
 
