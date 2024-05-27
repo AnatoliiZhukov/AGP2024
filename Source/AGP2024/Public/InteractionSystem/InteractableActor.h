@@ -14,7 +14,7 @@ class AGP2024_API AInteractableActor : public AActor, public IInteractableInterf
 	
 public:	
 	AInteractableActor();
-	virtual void Interact() override;
+	virtual void Interact(ACharacter* Interactor) override;
 
 protected:
 	// The box the player needs to look at in order to interact with the actor

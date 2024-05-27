@@ -20,9 +20,9 @@ void ALever::BeginPlay()
 	if(TargetActor) TargetMoveable = TargetActor->GetComponentByClass<UMoveable>();
 }
 
-void ALever::Interact()
+void ALever::Interact(ACharacter* Interactor)
 {
-	Super::Interact();
+	Super::Interact(Interactor);
 
 	bIsActivated = !bIsActivated;
 	OnLeverStateChanged.Broadcast(bIsActivated);

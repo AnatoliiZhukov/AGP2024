@@ -45,17 +45,40 @@ void APlayerCharacter::Damage()
 	}
 }
 
+void APlayerCharacter::EnableCharacterInput(bool EnableInput)
+{
+	if (const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
+			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			if(EnableInput && !Subsystem->HasMappingContext(PlayerCharacterMappingContext))
+			{
+				Subsystem->AddMappingContext(PlayerCharacterMappingContext, 0);
+				bCharacterInputEnabled = true;
+				return;
+			}
+			if(!EnableInput && Subsystem->HasMappingContext(PlayerCharacterMappingContext))
+			{
+				Subsystem->RemoveMappingContext(PlayerCharacterMappingContext);
+				bCharacterInputEnabled = false;
+				return;
+			}
+		}
+	}
+}
+
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	if (const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
-		// Add mapping context
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
 			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(PlayerCharacterMappingContext, 0);
+			bCharacterInputEnabled = true;
 		}
 		
 		UCustomCharacterMovement* CustomMovementTemp = GetComponentByClass<UCustomCharacterMovement>();

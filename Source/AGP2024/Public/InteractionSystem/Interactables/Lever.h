@@ -18,7 +18,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnLeverStateChanged OnLeverStateChanged;
 	
-	virtual void Interact() override;
+	virtual void Interact(ACharacter* Interactor) override;
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")

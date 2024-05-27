@@ -2,6 +2,7 @@
 
 #include "Animation/AnimNode_Inertialization.h"
 #include "Characters/PlayerCharacter/PlayerCharacter.h"
+#include "Components/Image.h"
 #include "CoreSetup/CustomHUD.h"
 #include "InteractionSystem/InteractableInterface.h"
 #include "Widgets/HUDWidget.h"
@@ -30,9 +31,15 @@ void UCharacterInteractionComponent::TickComponent(float DeltaTime, ELevelTick T
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
-	TargetInteractable = GetInteractableInRange();
-	if(TargetInteractable) CustomHUD->GetHUDWidget()->ShowInteractCrosshair(true);
-	else CustomHUD->GetHUDWidget()->ShowInteractCrosshair(false);
+	if(OwningPlayerCharacter->CharacterInputEnabled())
+	{
+		TargetInteractable = GetInteractableInRange();
+		if(TargetInteractable) CustomHUD->GetHUDWidget()->ShowInteractCrosshair(true);
+		else CustomHUD->GetHUDWidget()->ShowInteractCrosshair(false);
+		return;
+	}
+
+	if(CustomHUD->GetHUDWidget()->InteractCrosshair->IsVisible()) CustomHUD->GetHUDWidget()->ShowInteractCrosshair(false);
 }
 
 IInteractableInterface* UCharacterInteractionComponent::GetInteractableInRange() const
@@ -61,6 +68,6 @@ void UCharacterInteractionComponent::OnInteractInputReceived()
 {
 	if(TargetInteractable)
 	{
-		TargetInteractable->Interact();
+		TargetInteractable->Interact(OwningPlayerCharacter);
 	}
 }

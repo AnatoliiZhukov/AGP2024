@@ -21,15 +21,15 @@ void ACustomHUD::CreateAndShowHUDWidget()
 	}
 }
 
-void ACustomHUD::CreateAndCollapseFailScreen()
+void ACustomHUD::CreateAndCollapseEndScreen()
 {
-	if (FailScreenClass)
+	if (EndScreenClass)
 	{
-		FailScreen = CreateWidget<UUserWidget>(GetWorld(), FailScreenClass);
-		if (FailScreen)
+		EndScreen = CreateWidget<UUserWidget>(GetWorld(), EndScreenClass);
+		if (EndScreen)
 		{
-			FailScreen->AddToViewport();
-			FailScreen->SetVisibility(ESlateVisibility::Collapsed);
+			EndScreen->AddToViewport();
+			EndScreen->SetVisibility(ESlateVisibility::Collapsed);
 		}
 	}
 }
@@ -71,12 +71,22 @@ void ACustomHUD::CenterMouseCursor()
 	PlayerController->SetMouseLocation(ScreenCenter.X, ScreenCenter.Y);
 }
 
-void ACustomHUD::ShowFailScreen()
+void ACustomHUD::SetEndScreenText()
 {
-	if(!FailScreen || FailScreen->GetVisibility() == ESlateVisibility::Visible) return;
+	
+}
+
+void ACustomHUD::SetEndScreenBackgroundColour()
+{
+	
+}
+
+void ACustomHUD::ShowEndScreen()
+{
+	if(!EndScreen || EndScreen->GetVisibility() == ESlateVisibility::Visible) return;
 	
 	SetInputModeUIOnly();
-	FailScreen->SetVisibility(ESlateVisibility::Visible);
+	EndScreen->SetVisibility(ESlateVisibility::Visible);
 }
 
 void ACustomHUD::BeginPlay()
@@ -86,5 +96,5 @@ void ACustomHUD::BeginPlay()
 	SetInputModeGameOnly();
 
 	CreateAndShowHUDWidget();
-	CreateAndCollapseFailScreen();
+	CreateAndCollapseEndScreen();
 }

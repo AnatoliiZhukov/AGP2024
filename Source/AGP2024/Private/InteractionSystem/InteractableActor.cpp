@@ -14,7 +14,7 @@ AInteractableActor::AInteractableActor()
 	RootComponent = InteractionBox;
 }
 
-void AInteractableActor::Interact()
+void AInteractableActor::Interact(ACharacter* Interactor)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Interaction successful"))
 }

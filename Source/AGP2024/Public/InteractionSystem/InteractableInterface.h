@@ -19,5 +19,5 @@ class AGP2024_API IInteractableInterface
 
 public:
 	UFUNCTION()
-	virtual void Interact() = 0;
+	virtual void Interact(ACharacter* Interactor) = 0;
 };

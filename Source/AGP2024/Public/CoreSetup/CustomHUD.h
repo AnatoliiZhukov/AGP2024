@@ -18,6 +18,8 @@ class AGP2024_API ACustomHUD : public AHUD
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UHUDWidget* GetHUDWidget() const {return HUDWidget;}
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UUserWidget* GetEndScreen() const {return EndScreen;}
 	
 	UFUNCTION()
 	void SetInputModeGameOnly() const;
@@ -29,7 +31,11 @@ public:
 	void CenterMouseCursor();
 
 	UFUNCTION()
-	void ShowFailScreen();
+	void SetEndScreenText();
+	UFUNCTION()
+	void SetEndScreenBackgroundColour();
+	UFUNCTION()
+	void ShowEndScreen();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -41,9 +47,9 @@ protected:
 	void CreateAndShowHUDWidget();
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
-	TSubclassOf<UUserWidget> FailScreenClass;
+	TSubclassOf<UUserWidget> EndScreenClass;
 	UPROPERTY()
-	TObjectPtr<UUserWidget> FailScreen;
-	void CreateAndCollapseFailScreen();
+	TObjectPtr<UUserWidget> EndScreen;
+	void CreateAndCollapseEndScreen();
 
 };

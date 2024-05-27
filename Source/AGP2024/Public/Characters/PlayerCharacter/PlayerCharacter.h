@@ -24,9 +24,18 @@ public:
 	
 	FVector GetCameraTargetLocation() const { return ArmsMesh->GetSocketLocation(NAME_CameraBone); }
 	FRotator GetCameraTargetRotation() const { return ArmsMesh->GetSocketRotation(NAME_CameraBone); }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	USkeletalMeshComponent* GetArmsMesh() const { return ArmsMesh; }
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UCharacterInteractionComponent* GetCharacterInteraction() const { return CharacterInteractionComponent; }
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool CharacterInputEnabled() const { return bCharacterInputEnabled; };
 	
 	virtual void Damage() override;
-
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UCustomCharacterMovement> CustomCharacterMovement;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
@@ -38,9 +47,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UPlayerCombatComponent> PlayerCombatComponent;
 
+	UFUNCTION()
+	void EnableCharacterInput(bool EnableInput);
+	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
 	bool bIsImmuneToDamage = false;
+
+	bool bCharacterInputEnabled = false;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerInput", meta=(AllowPrivateAccess=true))
