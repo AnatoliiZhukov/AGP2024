@@ -71,7 +71,7 @@ void ALevelFinish::Interact(ACharacter* Interactor)
 void ALevelFinish::OnMontageBlendingOutStarted(UAnimMontage* Montage, bool bInterrupted)
 {
 	// Stop time and show EndScreen when the animation finishes playing
-	GetWorld()->GetWorldSettings()->SetTimeDilation(0.f);
+	
 	if(APlayerController* PlayerController = Cast<APlayerController>(RecentInteractor->GetController()))
 	{
 		if(ACustomHUD* CustomHUD = Cast<ACustomHUD>(PlayerController->GetHUD()))

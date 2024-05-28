@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "CoreSetup/CustomPlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -12,15 +9,16 @@ void ACustomPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (ACustomHUD* CoreSetupHUD = Cast<ACustomHUD>(GetHUD()))
+	if (ACustomHUD* CustomHUD = Cast<ACustomHUD>(GetHUD()))
 	{
-		HUD = CoreSetupHUD;
+		HUD = CustomHUD;
 	}
+}
 
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
-	{
-		Subsystem->AddMappingContext(PlayerControllerMappingContext, 0);
-	}
+void ACustomPlayerController::OnEscInputReceived()
+{
+	UE_LOG(LogTemp, Warning, TEXT("e"))
+	if(HUD) HUD->TogglePauseMenu();
 }
 
 void ACustomPlayerController::SetupCamera()
@@ -37,10 +35,19 @@ void ACustomPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent))
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
+		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
-		// Bind stuff
-		
+		Subsystem->AddMappingContext(PlayerControllerMappingContext, 0);
+	}
+
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
+	{
+		EnhancedInputComponent->BindAction(
+			EscAction,
+			ETriggerEvent::Triggered,
+			this,
+			&ACustomPlayerController::OnEscInputReceived);
 	}
 }
 

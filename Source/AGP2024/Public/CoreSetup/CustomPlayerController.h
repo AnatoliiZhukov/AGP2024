@@ -23,11 +23,15 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void OnEscInputReceived();
+	
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta=(AllowPrivateAccess = true))
 	TObjectPtr<UInputMappingContext> PlayerControllerMappingContext = nullptr;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta=(AllowPrivateAccess = true))
-	TObjectPtr<UInputMappingContext> PlayerCharacterMappingContext;
+	TObjectPtr<UInputAction> EscAction = nullptr;
+
 	
 	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess = true))
 	TObjectPtr<APlayerCharacter> PossessedCharacter = nullptr;

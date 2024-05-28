@@ -11,10 +11,10 @@
 
 void ACustomHUD::CreateAndShowHUDWidget()
 {
-	if (HUDWidgetClass)
+	if(HUDWidgetClass)
 	{
 		HUDWidget = CreateWidget<UHUDWidget>(GetWorld(), HUDWidgetClass);
-		if (HUDWidget)
+		if(HUDWidget)
 		{
 			HUDWidget->AddToViewport();
 			HUDWidget->ShowInteractCrosshair(false);
@@ -24,13 +24,26 @@ void ACustomHUD::CreateAndShowHUDWidget()
 
 void ACustomHUD::CreateAndCollapseEndScreen()
 {
-	if (EndScreenClass)
+	if(EndScreenClass)
 	{
 		EndScreen = CreateWidget<UEndScreen>(GetWorld(), EndScreenClass);
-		if (EndScreen)
+		if(EndScreen)
 		{
 			EndScreen->AddToViewport();
 			EndScreen->SetVisibility(ESlateVisibility::Collapsed);
+		}
+	}
+}
+
+void ACustomHUD::CreateAndCollapsePauseMenu()
+{
+	if(PauseMenuClass)
+	{
+		PauseMenu = CreateWidget<UUserWidget>(GetWorld(), PauseMenuClass);
+		if(PauseMenu)
+		{
+			PauseMenu->AddToViewport();
+			PauseMenu->SetVisibility(ESlateVisibility::Collapsed);
 		}
 	}
 }
@@ -81,9 +94,30 @@ void ACustomHUD::ShowEndScreen(const bool Success, const FText& Text) const
 	EndScreen->SetText(Text);
 	EndScreen->SetBackgroundColor(Success);
 
+	if(Success) GetOwningPlayerController()->SetPause(true);
+	
 	if(HUDWidget && HUDWidget->IsVisible()) HUDWidget->SetVisibility(ESlateVisibility::Collapsed);
 	
 	EndScreen->SetVisibility(ESlateVisibility::Visible);
+}
+
+void ACustomHUD::TogglePauseMenu()
+{
+	if(!PauseMenu) return;
+
+	if(bPauseMenuOpen)
+	{
+		PauseMenu->SetVisibility(ESlateVisibility::Collapsed);
+		SetInputModeGameOnly();
+		GetOwningPlayerController()->SetPause(false);
+	}
+	else
+	{
+		PauseMenu->SetVisibility(ESlateVisibility::Visible);
+		SetInputModeGameAndUI(true);
+		GetOwningPlayerController()->SetPause(true);
+	}
+	bPauseMenuOpen = !bPauseMenuOpen;
 }
 
 void ACustomHUD::BeginPlay()
@@ -94,4 +128,5 @@ void ACustomHUD::BeginPlay()
 
 	CreateAndShowHUDWidget();
 	CreateAndCollapseEndScreen();
+	CreateAndCollapsePauseMenu();
 }

@@ -34,6 +34,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ShowEndScreen(bool Success, const FText& Text) const;
 	
+	UFUNCTION()
+	void TogglePauseMenu();
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -48,4 +51,11 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UEndScreen> EndScreen;
 	void CreateAndCollapseEndScreen();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+	TSubclassOf<UUserWidget> PauseMenuClass;
+	UPROPERTY()
+	TObjectPtr<UUserWidget> PauseMenu;
+	void CreateAndCollapsePauseMenu();
+	bool bPauseMenuOpen = false;
 };
