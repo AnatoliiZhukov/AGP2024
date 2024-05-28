@@ -59,7 +59,7 @@ void UPlayerCombatComponent::OnDefeated()
 	{
 		if(ACustomHUD* CustomHUD = Cast<ACustomHUD>(PlayerController->GetHUD()))
 		{
-			CustomHUD->ShowEndScreen();
+			CustomHUD->ShowEndScreen(false, FText::FromString("You failed!"));
 		}
 	}
 }

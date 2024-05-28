@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "CustomHUD.generated.h"
 
+class UEndScreen;
 class UHUDWidget;
 /**
  * 
@@ -19,37 +20,32 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UHUDWidget* GetHUDWidget() const {return HUDWidget;}
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	UUserWidget* GetEndScreen() const {return EndScreen;}
+	UEndScreen* GetEndScreen() const {return EndScreen;}
 	
 	UFUNCTION()
 	void SetInputModeGameOnly() const;
 	UFUNCTION()
-	void SetInputModeGameAndUI(bool ShowMouseCursor);
+	void SetInputModeGameAndUI(bool ShowMouseCursor) const;
 	UFUNCTION()
-	void SetInputModeUIOnly();
+	void SetInputModeUIOnly() const;
 	UFUNCTION()
-	void CenterMouseCursor();
+	void CenterMouseCursor() const;
 
-	UFUNCTION()
-	void SetEndScreenText();
-	UFUNCTION()
-	void SetEndScreenBackgroundColour();
-	UFUNCTION()
-	void ShowEndScreen();
+	UFUNCTION(BlueprintCallable)
+	void ShowEndScreen(bool Success, const FText& Text) const;
 	
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
-	TSubclassOf<UUserWidget> HUDWidgetClass;
+	TSubclassOf<UHUDWidget> HUDWidgetClass;
 	UPROPERTY()
 	TObjectPtr<UHUDWidget> HUDWidget;
 	void CreateAndShowHUDWidget();
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
-	TSubclassOf<UUserWidget> EndScreenClass;
+	TSubclassOf<UEndScreen> EndScreenClass;
 	UPROPERTY()
-	TObjectPtr<UUserWidget> EndScreen;
+	TObjectPtr<UEndScreen> EndScreen;
 	void CreateAndCollapseEndScreen();
-
 };

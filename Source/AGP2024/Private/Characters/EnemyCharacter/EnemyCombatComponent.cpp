@@ -52,7 +52,7 @@ void UEnemyCombatComponent::BeginPlay()
 
 void UEnemyCombatComponent::AttemptAttack()
 {
-	if(AttackIsOnCooldown()) return;
+	if(AttackIsOnCooldown() || OwningEnemyCharacter->bIsDefeated) return;
 	
 	if(EnemyCharacterMeshAnimInstance && AttackMontage)
 	{

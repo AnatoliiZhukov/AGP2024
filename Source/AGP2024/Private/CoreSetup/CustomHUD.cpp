@@ -4,6 +4,7 @@
 #include "CoreSetup/CustomHUD.h"
 
 #include "Blueprint/UserWidget.h"
+#include "Widgets/EndScreen.h"
 #include "Widgets/HUDWidget.h"
 
 #pragma region CreatingWidgets
@@ -25,7 +26,7 @@ void ACustomHUD::CreateAndCollapseEndScreen()
 {
 	if (EndScreenClass)
 	{
-		EndScreen = CreateWidget<UUserWidget>(GetWorld(), EndScreenClass);
+		EndScreen = CreateWidget<UEndScreen>(GetWorld(), EndScreenClass);
 		if (EndScreen)
 		{
 			EndScreen->AddToViewport();
@@ -43,7 +44,7 @@ void ACustomHUD::SetInputModeGameOnly() const
 	GetOwningPlayerController()->bShowMouseCursor = false;
 }
 
-void ACustomHUD::SetInputModeGameAndUI(bool ShowMouseCursor)
+void ACustomHUD::SetInputModeGameAndUI(bool ShowMouseCursor) const
 {
 	FInputModeGameAndUI InputMode;
 	GetOwningPlayerController()->SetInputMode(InputMode);
@@ -52,7 +53,7 @@ void ACustomHUD::SetInputModeGameAndUI(bool ShowMouseCursor)
 	if(ShowMouseCursor) CenterMouseCursor();
 }
 
-void ACustomHUD::SetInputModeUIOnly()
+void ACustomHUD::SetInputModeUIOnly() const
 {
 	FInputModeUIOnly InputMode;
 	APlayerController* PlayerController = GetOwningPlayerController();
@@ -62,7 +63,7 @@ void ACustomHUD::SetInputModeUIOnly()
 	CenterMouseCursor();
 }
 
-void ACustomHUD::CenterMouseCursor()
+void ACustomHUD::CenterMouseCursor() const
 {
 	APlayerController* PlayerController = GetOwningPlayerController();
 	int32 ScreenWidth, ScreenHeight;
@@ -71,21 +72,17 @@ void ACustomHUD::CenterMouseCursor()
 	PlayerController->SetMouseLocation(ScreenCenter.X, ScreenCenter.Y);
 }
 
-void ACustomHUD::SetEndScreenText()
-{
-	
-}
-
-void ACustomHUD::SetEndScreenBackgroundColour()
-{
-	
-}
-
-void ACustomHUD::ShowEndScreen()
+void ACustomHUD::ShowEndScreen(const bool Success, const FText& Text) const
 {
 	if(!EndScreen || EndScreen->GetVisibility() == ESlateVisibility::Visible) return;
 	
 	SetInputModeUIOnly();
+	
+	EndScreen->SetText(Text);
+	EndScreen->SetBackgroundColor(Success);
+
+	if(HUDWidget && HUDWidget->IsVisible()) HUDWidget->SetVisibility(ESlateVisibility::Collapsed);
+	
 	EndScreen->SetVisibility(ESlateVisibility::Visible);
 }
 

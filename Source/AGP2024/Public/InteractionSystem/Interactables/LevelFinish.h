@@ -27,4 +27,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAnimMontage> FinishMontage;
+
+	UFUNCTION()
+	void OnMontageBlendingOutStarted(UAnimMontage* Montage, bool bInterrupted);
 };
