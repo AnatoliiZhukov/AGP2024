@@ -25,7 +25,7 @@ public:
 	UFUNCTION()
 	void SetInputModeGameOnly() const;
 	UFUNCTION()
-	void SetInputModeGameAndUI(bool ShowMouseCursor) const;
+	void SetInputModeGameAndUI(const bool ShowMouseCursor) const;
 	UFUNCTION()
 	void SetInputModeUIOnly() const;
 	UFUNCTION()

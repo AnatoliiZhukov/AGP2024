@@ -57,12 +57,12 @@ void ACustomHUD::SetInputModeGameOnly() const
 	GetOwningPlayerController()->bShowMouseCursor = false;
 }
 
-void ACustomHUD::SetInputModeGameAndUI(bool ShowMouseCursor) const
+void ACustomHUD::SetInputModeGameAndUI(const bool ShowMouseCursor) const
 {
 	FInputModeGameAndUI InputMode;
 	GetOwningPlayerController()->SetInputMode(InputMode);
+	
 	GetOwningPlayerController()->bShowMouseCursor = ShowMouseCursor;
-
 	if(ShowMouseCursor) CenterMouseCursor();
 }
 
@@ -107,14 +107,16 @@ void ACustomHUD::TogglePauseMenu()
 
 	if(bPauseMenuOpen)
 	{
-		PauseMenu->SetVisibility(ESlateVisibility::Collapsed);
 		SetInputModeGameOnly();
+		
+		PauseMenu->SetVisibility(ESlateVisibility::Collapsed);
 		GetOwningPlayerController()->SetPause(false);
 	}
 	else
 	{
-		PauseMenu->SetVisibility(ESlateVisibility::Visible);
 		SetInputModeGameAndUI(true);
+		
+		PauseMenu->SetVisibility(ESlateVisibility::Visible);
 		GetOwningPlayerController()->SetPause(true);
 	}
 	bPauseMenuOpen = !bPauseMenuOpen;
