@@ -51,7 +51,7 @@ public:
 	void EnableCharacterInput(bool EnableInput);
 	
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties")
 	bool bIsImmuneToDamage = false;
 
 	bool bCharacterInputEnabled = false;
