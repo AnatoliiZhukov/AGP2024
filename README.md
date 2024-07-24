@@ -20,6 +20,13 @@ Hi! This is a beginner level first-person project made in **Unreal Engine 5.3** 
 - Emissive and world-aligned materials
 - Probably some other things I forgot about
 
+### Controls:
+WASD - movement
+Left Mouse Button - axe attack
+Space - jump
+CTRL - crouch/dodge
+Shift - sprint
+
 ### Will this project ever be updated?
 No, I initially planned to continue working on it, but decided to move on to other projects.
 You are welcome to copy the code, but please note that it may not be of high quality as it was written by a beginner/intermediate Unreal Engine user (me).
