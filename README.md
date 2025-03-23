@@ -1,32 +1,40 @@
 Hi! This is a beginner level first-person project made in **Unreal Engine 5.3** where you need to use your axe to escape from some... underground cave place... filled with archers for some reason?
-### This project features:
-- Mechanics written in C++
-- A first-person character able to run, crouch smoothly, jump, sprint, attack, take damage
-- Animated enemies able to locate the player, lose the player, attack, take damage
-  - Enemy model and animations taken from Mixamo
-- Object pools for arrows for every actor that is capable of shooting them
-- Attack system
-- Deflect system
-  - Damage an arrow to start deflecting
-  - Any arrow that gets into your attack range while deflecting gets destroyed
-- Custom core classes such as PlayerController, HUD, Camera Manager
-- A custom environment modeled in Blender
-- A first-person rig created pretty much from scratch in Blender
-- Custom first-person animations created from scratch in Blender
-- Main menu and UI with animations
-- A generic interaction system that uses delegates
-- W/L conditions with different ending sequences
-- A custom world subsystem
-- Emissive and world-aligned materials
-- Probably some other things I forgot about
 
-### Controls:
+Developed in Spring 2024, updated in Spring 2025 (minor improvements and config changes).
+
+## Character controls
+
 - WASD - movement
 - Left Mouse Button - axe attack
 - Space - jump
-- CTRL - crouch/dodge
-- Shift - sprint
+- CTRL - crouch (or accelerate downwards if used midair)
+- LShift - sprint
 
-### Will this project ever be updated?
-No, I initially planned to continue working on it, but decided to move on to other projects.
-You are welcome to copy the code, but please note that it may not be of high quality as it was written by a beginner/intermediate Unreal Engine user (me).
+## Contents of the project:
+
+### Functional
+
+- Mechanics written in C++
+- A first-person character able to run, crouch smoothly, jump, sprint, attack/block, take damage, interact with environment
+- Object pools for arrows for every actor that can shoot
+- Attack system
+- Block system
+  - Damage an arrow to start blocking
+  - Any arrow that gets into your attack range while deflecting gets destroyed and resets the block animation
+- A somewhat flexible interaction system
+  - Any object can have default interaction behaviour
+  - Custom interaction behaviour can be added in the level blueprint
+  - Uses delegates
+- Custom core classes such as PlayerController, HUD, Camera Manager
+- Main menu and UI with animations
+- W/L conditions with multiple ending sequences
+- A custom world subsystem
+
+### Visual
+
+- A rigged first-person character that can hold a weapon
+  - The character + animations and the weapon made from scratch in Blender
+- Animated enemies able to locate the player, forget the player, attack, take damage
+  - Enemy model and animations taken from Mixamo
+- A simple environment modeled from scratch in Blender
+- Emissive and world-aligned materials
